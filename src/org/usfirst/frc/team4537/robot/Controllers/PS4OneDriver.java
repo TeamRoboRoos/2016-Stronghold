@@ -7,8 +7,8 @@ public class PS4OneDriver extends DriverController {
 	
 	private final int circle = 2;				//Circle button PS4 Controller.
 	private final int triangle = 4;				//Triangle button PS4 Controller.
-	//private final int leftShoulder = 5;			//R1 button PS4 Controller.
-	//private final int rightShoulder = 6;		//R2 button PS4 Controller.
+	private final int leftShoulder = 5;			//R1 button PS4 Controller.
+	private final int rightShoulder = 6;		//R2 button PS4 Controller.
 
 	public PS4OneDriver(){
 		stick = new Joystick(0);
@@ -80,7 +80,21 @@ public class PS4OneDriver extends DriverController {
 
 	@Override
 	public double getAngle() {
-		return stick.getRawAxis(0) * -1;
+double angle = 0;
+		
+		if(Math.abs(stick.getRawAxis(0)) < 0.02) { 		//if the left thumbstick isn't moving
+			if (stick.getRawButton(leftShoulder)) {		//and if the left shoulder is being pressed
+				angle += -0.3;							//turn anti-clockwise slowly
+			}
+			
+			if (stick.getRawButton(rightShoulder)) {	//and if the right shoulder is being pressed
+				angle += 0.3;							//turn clockwise slowly
+			}
+		}
+		else {											//if none of the buttons are being pressed and the thumbstick is moving
+			angle = stick.getRawAxis(0);			//the angle is the thumbstick value
+		}
+		return angle;
 	}
 
 	@Override

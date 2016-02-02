@@ -14,16 +14,16 @@ public class DriveBase {
 	// The motors - each needs the correct CAN ID to be set
 	
 	// Can change for left motor, or left rear motor (if there are four)
-	private final int LEFT_REAR_MOTOR = 0;
+	private final int LEFT_REAR_MOTOR = 24;
 	
 	// Can change for right motor, or right rear motor (if there are four)
-	private final int RIGHT_REAR_MOTOR = 0;
+	private final int RIGHT_REAR_MOTOR = 22;
 	
 	// Can change for left front motor (only if four motors are attached)
-	private final int LEFT_FRONT_MOTOR = 0;
+	private final int LEFT_FRONT_MOTOR = 26;
 	
 	// Can change for right front motor (only if four motors are attached)
-	private final int RIGHT_FRONT_MOTOR = 0;
+	private final int RIGHT_FRONT_MOTOR = 20;
 	
 	// Set to -1 to reverse the default direction
 	private int motorDirection = 1;	
@@ -40,7 +40,7 @@ public class DriveBase {
 	// ----------------------------------------------------------------------
 	// When we play with setting the maximum possible accelleration, we'll 
 	// need to adjust this. At the moment, it may be worth ignoring for a bit.
-	private final double MAX_ACCELERATION = 0.001;
+	private final double MAX_ACCELERATION = 0.3;
 	
 	// Modify this to test the accelleration limiters - probably 
     // worth waiting until we confirm the code.
@@ -485,7 +485,7 @@ public class DriveBase {
 		{
 			speed = 0;
 		}
-		
+		System.out.println("Target Speed: " + targetSpeed + "| Speed : " + speed);
 		return speed;
 	}
 }
