@@ -14,13 +14,13 @@ public class DriveBase {
 	// The motors - each needs the correct CAN ID to be set
 	
 	// Can change for left motor, or left rear motor (if there are four)
-	private final int LEFT_REAR_MOTOR = 24;
+	private final int LEFT_REAR_MOTOR = 26;
 	
 	// Can change for right motor, or right rear motor (if there are four)
 	private final int RIGHT_REAR_MOTOR = 22;
 	
 	// Can change for left front motor (only if four motors are attached)
-	private final int LEFT_FRONT_MOTOR = 26;
+	private final int LEFT_FRONT_MOTOR = 24;
 	
 	// Can change for right front motor (only if four motors are attached)
 	private final int RIGHT_FRONT_MOTOR = 20;
@@ -117,12 +117,13 @@ public class DriveBase {
 		{
 			// Grab the speed as the Y axis on the joystick and convert it (make all the required adjustments)
 			double speed = convertSpeed(joystick0.getAxis(AxisType.kY));
+			double turnSpeed = convertTurn(joystick0.getAxis(AxisType.kX) * Math.signum(speed));
 			// Finally, if the accelleration limiter is on, limit the max speed permitted.
 			speed = limitMaxSpeedChange(speed);
-
+			//previousSpeedLeft = speed;
 			// Grab the turn speed as the X axis on the joystick and convert it (make all the required adjustments)
-			double turnSpeed = convertTurn(joystick0.getAxis(AxisType.kX));
-
+			//turnSpeed = limitMaxTurnSpeedChange(turnSpeed);
+			previousTurnSpeed = turnSpeed;
 			// Drive the robot in arcade mode.
 			robotDrive.arcadeDrive(speed, turnSpeed, true);
 		}
@@ -137,7 +138,8 @@ public class DriveBase {
 			// Finally, if the accelleration limiter is on, limit the max speed permitted.
 			leftSpeed  = limitMaxSpeedLeftChange(leftSpeed);
 			rightSpeed = limitMaxSpeedRightChange(rightSpeed);
-
+			previousSpeedLeft = leftSpeed;
+			previousSpeedRight = rightSpeed;
 			// Drive the robot in tank mode.
 			robotDrive.tankDrive(leftSpeed, rightSpeed, true);
 		}
@@ -149,10 +151,10 @@ public class DriveBase {
 			double speed = convertSpeed(robot.getController().getSpeed());
 			// Finally, if the accelleration limiter is on, limit the max speed permitted.
 			speed = limitMaxSpeedChange(speed);
-			
+			previousSpeedLeft = speed;
 			// Grab the turn speed as the X axis on the joystick and convert it (make all the required adjustments)
 			double turnSpeed = convertTurn(robot.getController().getAngle());
-			
+			previousTurnSpeed = turnSpeed;
 			// Drive the robot.
 			robotDrive.drive(speed, turnSpeed);
 		}
