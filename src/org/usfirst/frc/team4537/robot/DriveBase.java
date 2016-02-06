@@ -15,20 +15,18 @@ public class DriveBase {
 	// The motors - each needs the correct CAN ID to be set
 	
 	// Can change for left motor, or left rear motor (if there are four)
-<<<<<<< HEAD
-	private final int LEFT_REAR_MOTOR = 26;
-=======
-	private final int LEFT_REAR_MOTOR = 20;
->>>>>>> 5e1c23be4526a83795fe980000f1d346ec50017f
+
+
+	private final int LEFT_REAR_MOTOR = 11;
 	
 	// Can change for right motor, or right rear motor (if there are four)
-	private final int RIGHT_REAR_MOTOR = 22;
+	private final int RIGHT_REAR_MOTOR = 21;
 	
 	// Can change for left front motor (only if four motors are attached)
-	private final int LEFT_FRONT_MOTOR = 24;
+	private final int LEFT_FRONT_MOTOR = 10;
 	
 	// Can change for right front motor (only if four motors are attached)
-	private final int RIGHT_FRONT_MOTOR = 24;
+	private final int RIGHT_FRONT_MOTOR = 20;
 	
 	// Set to -1 to reverse the default direction
 	private int motorDirection = 1;	
@@ -37,7 +35,7 @@ public class DriveBase {
 	private final int TURN_DIRECTION = -1;	
 	
 	// Speed limited. Set to 1 to make Maddy happy. Set below 1 to make Maddy sad.
-	private final double MAX_SPEED = 1; 
+	private final double MAX_SPEED = 0.3; 
 	
 	// Limits the maxiumum turning speed. 1 is max turning speed.	
 	private final double MAX_TURN_SPEED = 1;
@@ -122,18 +120,14 @@ public class DriveBase {
 		{
 			// Grab the speed as the Y axis on the joystick and convert it (make all the required adjustments)
 			double speed = convertSpeed(joystick0.getAxis(AxisType.kY));
-			double turnSpeed = convertTurn(joystick0.getAxis(AxisType.kX) * Math.signum(speed));
+			double turnSpeed = convertTurn(joystick0.getAxis(AxisType.kX));
 			// Finally, if the accelleration limiter is on, limit the max speed permitted.
 			speed = limitMaxSpeedChange(speed);
 			//previousSpeedLeft = speed;
 			// Grab the turn speed as the X axis on the joystick and convert it (make all the required adjustments)
-<<<<<<< HEAD
-			//turnSpeed = limitMaxTurnSpeedChange(turnSpeed);
+			turnSpeed = limitMaxTurnSpeedChange(turnSpeed);
 			previousTurnSpeed = turnSpeed;
-=======
-			double turnSpeed = convertTurn(joystick0.getThrottle());
-
->>>>>>> 5e1c23be4526a83795fe980000f1d346ec50017f
+			turnSpeed = convertTurn(joystick0.getThrottle());
 			// Drive the robot in arcade mode.
 			robotDrive.arcadeDrive(speed, turnSpeed, true);
 		}
