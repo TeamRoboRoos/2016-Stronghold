@@ -1,5 +1,6 @@
 package org.usfirst.frc.team4537.robot.Controllers;
 import edu.wpi.first.wpilibj.*;
+import edu.wpi.first.wpilibj.Joystick.RumbleType;
 
 public class PS4OneDriver extends DriverController {
 
@@ -9,9 +10,12 @@ public class PS4OneDriver extends DriverController {
 	private final int triangle = 4;				//Triangle button PS4 Controller.
 	private final int leftShoulder = 5;			//R1 button PS4 Controller.
 	private final int rightShoulder = 6;		//R2 button PS4 Controller.
+	private final double leftButtonTurn = -0.5;
+	private final double rightButtonTurn = 0.5;
 
 	public PS4OneDriver(){
 		stick = new Joystick(0);
+		
 	}
 	
 	@Override
@@ -73,8 +77,7 @@ public class PS4OneDriver extends DriverController {
 
 	@Override
 	public double getSpeed() {
-		//Gets rid of the motor problem with holding down L2 and R2.
-		double speed = 	stick.getRawAxis(2) - stick.getRawAxis(3); 
+		double speed = stick.getRawAxis(2) - stick.getRawAxis(3);		//Gets rid of the motor problem with holding down L2 and R2.
 		return speed;
 	}
 
@@ -82,8 +85,9 @@ public class PS4OneDriver extends DriverController {
 	public double getAngle() {
 		double angle = 0;
 		
-		if(Math.abs(stick.getRawAxis(0)) < 0.02) { 		//if the left thumbstick isn't moving
+		if(Math.abs(stick.getRawAxis(0)) < 0.03) { 		//if the left thumbstick isn't moving
 			if (stick.getRawButton(leftShoulder)) {		//and if the left shoulder is being pressed
+<<<<<<< HEAD
 				angle += -0.3;							//turn anti-clockwise slowly
 				System.out.println("leftShoulder");
 			}
@@ -91,6 +95,15 @@ public class PS4OneDriver extends DriverController {
 			if (stick.getRawButton(rightShoulder)) {	//and if the right shoulder is being pressed
 				angle += 0.3;							//turn clockwise slowly
 				System.out.println("rightShoulder");
+=======
+				angle += leftButtonTurn;	
+				System.out.println("Left " + angle);//turn anti-clockwise slowly
+			}
+			
+			if (stick.getRawButton(rightShoulder)) {	//and if the right shoulder is being pressed
+				angle += rightButtonTurn;	
+				System.out.println("Right " + angle);//turn clockwise slowly
+>>>>>>> bc36ccdc3b996e71ad4d808dfc6e7fd8926b0eba
 			}
 		}
 		else {											//if none of the buttons are being pressed and the thumbstick is moving

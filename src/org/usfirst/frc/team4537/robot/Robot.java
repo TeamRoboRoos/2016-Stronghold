@@ -50,7 +50,7 @@ public class Robot extends SampleRobot {
 	 */
     public Robot() {
     	// 1. Set the default controller
-        controller = new ArcadeOneDriver();
+        controller = new PS4OneDriver();
         
         // Set the drive base. Note that the drive base may reference
         // the controller, so it needs to be the last step.

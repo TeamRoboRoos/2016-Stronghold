@@ -3,6 +3,7 @@ package org.usfirst.frc.team4537.robot;
 import org.usfirst.frc.team4537.robot.Controllers.DriverController;
 import edu.wpi.first.wpilibj.*;
 import edu.wpi.first.wpilibj.Joystick.AxisType;
+import edu.wpi.first.wpilibj.Joystick.RumbleType;
 import edu.wpi.first.wpilibj.RobotDrive.MotorType;
 
 public class DriveBase {
@@ -28,7 +29,7 @@ public class DriveBase {
 	// Can change for right front motor (only if four motors are attached)
 	private final int RIGHT_FRONT_MOTOR = 20;
 	
-	// Set to -1 to reverse the default direction
+	// Set to -1 to reverse the default directionx`
 	private int motorDirection = 1;	
 	
 	// Set to -1 to reverse the turn direction
@@ -165,6 +166,9 @@ public class DriveBase {
 			previousTurnSpeed = turnSpeed;
 			// Drive the robot.
 			robotDrive.drive(speed, turnSpeed);
+			
+			//joystick0.setRumble(RumbleType.kLeftRumble, (float) Math.abs(speed));
+			//joystick0.setRumble(RumbleType.kRightRumble, (float) Math.abs(speed));
 		}
 	
 		// Check to see if the operator wants to adjust the maximum possible speed.
@@ -495,6 +499,10 @@ public class DriveBase {
 		{
 			speed = 0;
 		}
+<<<<<<< HEAD
+=======
+		//System.out.println("Target Speed: " + targetSpeed + "| Speed : " + speed);
+>>>>>>> bc36ccdc3b996e71ad4d808dfc6e7fd8926b0eba
 		return speed;
 	}
 }
