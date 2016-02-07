@@ -80,15 +80,17 @@ public class PS4OneDriver extends DriverController {
 
 	@Override
 	public double getAngle() {
-double angle = 0;
+		double angle = 0;
 		
 		if(Math.abs(stick.getRawAxis(0)) < 0.02) { 		//if the left thumbstick isn't moving
 			if (stick.getRawButton(leftShoulder)) {		//and if the left shoulder is being pressed
 				angle += -0.3;							//turn anti-clockwise slowly
+				System.out.println("leftShoulder");
 			}
 			
 			if (stick.getRawButton(rightShoulder)) {	//and if the right shoulder is being pressed
 				angle += 0.3;							//turn clockwise slowly
+				System.out.println("rightShoulder");
 			}
 		}
 		else {											//if none of the buttons are being pressed and the thumbstick is moving

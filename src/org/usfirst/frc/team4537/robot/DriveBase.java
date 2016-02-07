@@ -35,7 +35,7 @@ public class DriveBase {
 	private final int TURN_DIRECTION = -1;	
 	
 	// Speed limited. Set to 1 to make Maddy happy. Set below 1 to make Maddy sad.
-	private final double MAX_SPEED = 0.3; 
+	private final double MAX_SPEED = 1; 
 	
 	// Limits the maxiumum turning speed. 1 is max turning speed.	
 	private final double MAX_TURN_SPEED = 1;
@@ -43,11 +43,11 @@ public class DriveBase {
 	// ----------------------------------------------------------------------
 	// When we play with setting the maximum possible accelleration, we'll 
 	// need to adjust this. At the moment, it may be worth ignoring for a bit.
-	private final double MAX_ACCELERATION = 0.3;
+	private final double MAX_ACCELERATION = 0.01;
 	
 	// Modify this to test the accelleration limiters - probably 
     // worth waiting until we confirm the code.
-	private boolean limitMaxAcceleration = false;
+	private boolean limitMaxAcceleration = true;
 	
 	// ----------------------------------------------------------------------
 	// Various internal variables used to run the drivebase
@@ -120,14 +120,18 @@ public class DriveBase {
 		{
 			// Grab the speed as the Y axis on the joystick and convert it (make all the required adjustments)
 			double speed = convertSpeed(joystick0.getAxis(AxisType.kY));
-			double turnSpeed = convertTurn(joystick0.getAxis(AxisType.kX));
+			double turnSpeed = convertTurn(joystick0.getThrottle());
 			// Finally, if the accelleration limiter is on, limit the max speed permitted.
+			
 			speed = limitMaxSpeedChange(speed);
+		
+			previousSpeedLeft = speed;
 			//previousSpeedLeft = speed;
 			// Grab the turn speed as the X axis on the joystick and convert it (make all the required adjustments)
+			System.out.print("Target Speed: " + turnSpeed);
 			turnSpeed = limitMaxTurnSpeedChange(turnSpeed);
 			previousTurnSpeed = turnSpeed;
-			turnSpeed = convertTurn(joystick0.getThrottle());
+			System.out.println(" | Speed: " + turnSpeed);
 			// Drive the robot in arcade mode.
 			robotDrive.arcadeDrive(speed, turnSpeed, true);
 		}
@@ -491,7 +495,6 @@ public class DriveBase {
 		{
 			speed = 0;
 		}
-		System.out.println("Target Speed: " + targetSpeed + "| Speed : " + speed);
 		return speed;
 	}
 }
