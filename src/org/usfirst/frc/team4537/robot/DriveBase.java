@@ -121,7 +121,7 @@ public class DriveBase {
 		{
 			// Grab the speed as the Y axis on the joystick and convert it (make all the required adjustments)
 			double speed = convertSpeed(joystick0.getAxis(AxisType.kY));
-			double turnSpeed = convertTurn(joystick0.getThrottle());
+			double turnSpeed = convertTurnNoAccel(joystick0.getThrottle());
 			// Finally, if the accelleration limiter is on, limit the max speed permitted.
 			
 			speed = limitMaxSpeedChange(speed);
@@ -130,8 +130,8 @@ public class DriveBase {
 			//previousSpeedLeft = speed;
 			// Grab the turn speed as the X axis on the joystick and convert it (make all the required adjustments)
 			System.out.print("Target Speed: " + turnSpeed);
-			turnSpeed = limitMaxTurnSpeedChange(turnSpeed);
-			previousTurnSpeed = turnSpeed;
+			turnSpeed = turnSpeed;
+	
 			System.out.println(" | Speed: " + turnSpeed);
 			// Drive the robot in arcade mode.
 			robotDrive.arcadeDrive(speed, turnSpeed, true);
@@ -207,6 +207,21 @@ public class DriveBase {
 		turnSpeed = turnSpeed * MAX_TURN_SPEED;
 		// Finally, if the acceleration limiter is on, limit the max speed permitted.
 		turnSpeed = limitMaxTurnSpeedChange(turnSpeed);
+		previousTurnSpeed = turnSpeed;
+		return turnSpeed;
+	}
+	
+	private double convertTurnNoAccel(double turnSpeed)
+	{	
+		// Reverse the turn speed if the robot has been inverted (front is the shooter, not the grabber)
+		turnSpeed = turnSpeed * motorDirection;
+		// Reverse the turn speed if the turning has been inverted
+		turnSpeed = turnSpeed * TURN_DIRECTION;
+		// Modify the turning speed by the current max speed value (for example, half the speed if currentMaxSpeed is 0.5).
+		turnSpeed = turnSpeed * currentMaxSpeed;
+		// Modify the turning speed by the preset max turning speed value.
+		turnSpeed = turnSpeed * MAX_TURN_SPEED;
+		// Finally, if the acceleration limiter is on, limit the max speed permitted.
 		
 		return turnSpeed;
 	}
@@ -499,10 +514,7 @@ public class DriveBase {
 		{
 			speed = 0;
 		}
-<<<<<<< HEAD
-=======
-		//System.out.println("Target Speed: " + targetSpeed + "| Speed : " + speed);
->>>>>>> bc36ccdc3b996e71ad4d808dfc6e7fd8926b0eba
+
 		return speed;
 	}
 }

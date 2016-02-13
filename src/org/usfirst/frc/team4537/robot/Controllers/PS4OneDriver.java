@@ -1,7 +1,6 @@
 package org.usfirst.frc.team4537.robot.Controllers;
 import edu.wpi.first.wpilibj.*;
 import edu.wpi.first.wpilibj.Joystick.RumbleType;
-
 public class PS4OneDriver extends DriverController {
 
 	private Joystick stick;
@@ -87,7 +86,6 @@ public class PS4OneDriver extends DriverController {
 		
 		if(Math.abs(stick.getRawAxis(0)) < 0.03) { 		//if the left thumbstick isn't moving
 			if (stick.getRawButton(leftShoulder)) {		//and if the left shoulder is being pressed
-<<<<<<< HEAD
 				angle += -0.3;							//turn anti-clockwise slowly
 				System.out.println("leftShoulder");
 			}
@@ -95,7 +93,7 @@ public class PS4OneDriver extends DriverController {
 			if (stick.getRawButton(rightShoulder)) {	//and if the right shoulder is being pressed
 				angle += 0.3;							//turn clockwise slowly
 				System.out.println("rightShoulder");
-=======
+
 				angle += leftButtonTurn;	
 				System.out.println("Left " + angle);//turn anti-clockwise slowly
 			}
@@ -103,7 +101,7 @@ public class PS4OneDriver extends DriverController {
 			if (stick.getRawButton(rightShoulder)) {	//and if the right shoulder is being pressed
 				angle += rightButtonTurn;	
 				System.out.println("Right " + angle);//turn clockwise slowly
->>>>>>> bc36ccdc3b996e71ad4d808dfc6e7fd8926b0eba
+
 			}
 		}
 		else {											//if none of the buttons are being pressed and the thumbstick is moving
