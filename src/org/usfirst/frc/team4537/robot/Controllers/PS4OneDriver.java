@@ -44,10 +44,6 @@ public class PS4OneDriver extends DriverController {
 		return stick.getRawButton(0);
 	}
 
-	@Override
-	public boolean isBallGrabberChangingPosition() {
-		return stick.getRawButton(2);
-	}
 
 	@Override
 	public double getCameraX() {

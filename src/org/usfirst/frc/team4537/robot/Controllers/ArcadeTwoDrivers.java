@@ -74,10 +74,7 @@ public class ArcadeTwoDrivers extends DriverController{
 		return 0;
 	}
 
-	@Override
-	public boolean isBallGrabberChangingPosition() {
-		return operatorStick.getRawButton(2);
-	}
+
 
 	@Override
 	public int getBallGrabberDirection() {

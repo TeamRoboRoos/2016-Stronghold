@@ -48,10 +48,7 @@ public class TankDrive extends DriverController {
 		return false;
 	}
 
-	@Override
-	public boolean isBallGrabberChangingPosition() {
-		return false;
-	}
+
 
 	@Override
 	public boolean canSwapDirection() {

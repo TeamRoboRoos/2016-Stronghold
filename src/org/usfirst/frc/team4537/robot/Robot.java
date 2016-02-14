@@ -105,6 +105,7 @@ public class Robot extends SampleRobot {
     	while(isOperatorControl() && isEnabled()){
     		Timer.delay(0.005);
         	driveBase.operatorControl();
+        	ballGrabber.operatorControl();
     	}
     }
 

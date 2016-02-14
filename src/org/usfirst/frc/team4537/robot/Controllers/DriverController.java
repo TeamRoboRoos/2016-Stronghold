@@ -33,7 +33,9 @@ public abstract class DriverController {
 	public double getMaxSpeed() { return -1; }
 	
 	//ball pickup
-	public abstract boolean isBallGrabberChangingPosition();
+	public int getBallGrabberMovement(){
+		return 0;
+	};
 	public abstract int getBallGrabberDirection();
 	
 	//ball shooter

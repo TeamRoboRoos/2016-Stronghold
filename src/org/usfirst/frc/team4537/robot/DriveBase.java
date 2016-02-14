@@ -120,11 +120,10 @@ public class DriveBase {
 		// Is it in arcade mode? 
 		if (robot.getController().getDriveMode() == DriverController.ARCADE)
 		{
-			
+
 			if(robot.getController().canSwapDirection() && !changedDirections){
 				motorDirection = motorDirection * -1;
 				changedDirections = true;
-				System.out.println("Swap" + motorDirection);
 			}else if(!robot.getController().canSwapDirection()){
 				changedDirections = false;
 			}
@@ -137,13 +136,10 @@ public class DriveBase {
 			// Grab the turn speed as the X axis on the joystick and convert it (make all the required adjustments)
 			//System.out.print("Target Speed: " + turnSpeed);
 			
-	
+			
 			//System.out.println(" | Speed: " + turnSpeed);
 			// Drive the robot in arcade mode.
 			robotDrive.arcadeDrive(speed, turnSpeed, true);
-			
-			
-			robot.getController().getRollerDirection();
 		}
 	
 		// Is it in tank mode?
