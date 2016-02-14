@@ -1,5 +1,6 @@
 package org.usfirst.frc.team4537.robot.Controllers;
 import edu.wpi.first.wpilibj.*;
+import edu.wpi.first.wpilibj.Relay.Value;
 
 public abstract class DriverController {
 
@@ -54,5 +55,8 @@ public abstract class DriverController {
 	public abstract Joystick getDefaultJoystick();
 	public abstract Joystick getJoystick(int id);
 	
+	public Value getRollerDirection(){
+		return Relay.Value.kOff;
+	};
 	
 }

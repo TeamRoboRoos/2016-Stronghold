@@ -16,7 +16,7 @@ public class DriveBase {
 	// The motors - each needs the correct CAN ID to be set
 	
 	// Can change for left motor, or left rear motor (if there are four)
-
+	private final int ROLLER = 0;
 
 	private final int LEFT_REAR_MOTOR = 11;
 	
@@ -39,18 +39,18 @@ public class DriveBase {
 	private final double MAX_SPEED = 1; 
 	
 	// Limits the maxiumum turning speed. 1 is max turning speed.	
-	private final double MAX_TURN_SPEED = 1;
+	private final double MAX_TURN_SPEED = 0.5;
 	
 	// ----------------------------------------------------------------------
 	// When we play with setting the maximum possible accelleration, we'll 
 	// need to adjust this. At the moment, it may be worth ignoring for a bit.
-	private final double MAX_ACCELERATION = 0.01;
+	private final double MAX_ACCELERATION = 0.07;
 	
 	// Modify this to test the accelleration limiters - probably 
     // worth waiting until we confirm the code.
-	private boolean limitMaxAcceleration = true;
-	
-	// ----------------------------------------------------------------------
+	private boolean limitMaxAcceleration = false;
+
+	// --------------------------------------false--------------------------------
 	// Various internal variables used to run the drivebase
 	private boolean driving;				// Is it currently moving in autonomous?
 	private double finishTime;				// When is it due to finish moving?
@@ -63,7 +63,8 @@ public class DriveBase {
 	private double previousSpeedLeft;		// Used for accelleration limiter - what was the last left motor speed?
 	private double previousSpeedRight;		// Used for accelleration limiter - what was the last right motor speed?
 	private double previousTurnSpeed;		// Used for accelleration limiter - what was the last turn speed?
-	
+	private boolean changedDirections = false;
+	private Relay roller;
 	// ----------------------------------------------------------------------
 	// Constructors
 	// ----------------------------------------------------------------------
@@ -81,6 +82,7 @@ public class DriveBase {
         // Four motor drive. If the CAN IDs are properly set, you won't need to do anything here.
         robotDrive = new RobotDrive(new CANTalon(LEFT_FRONT_MOTOR), new CANTalon(LEFT_REAR_MOTOR),
         							new CANTalon(RIGHT_FRONT_MOTOR), new CANTalon(RIGHT_REAR_MOTOR));
+        roller = new Relay(ROLLER);
         
         // Inverts the motors. You will need to set this, in order to make the 
         // wheels match direction. Commented out for now due to an overabundance
@@ -119,22 +121,33 @@ public class DriveBase {
 		// Is it in arcade mode? 
 		if (robot.getController().getDriveMode() == DriverController.ARCADE)
 		{
+			
+			if(robot.getController().canSwapDirection() && !changedDirections){
+				motorDirection = motorDirection * -1;
+				changedDirections = true;
+				System.out.println("Swap" + motorDirection);
+			}else if(!robot.getController().canSwapDirection()){
+				changedDirections = false;
+			}
 			// Grab the speed as the Y axis on the joystick and convert it (make all the required adjustments)
 			double speed = convertSpeed(joystick0.getAxis(AxisType.kY));
 			double turnSpeed = convertTurnNoAccel(joystick0.getThrottle());
 			// Finally, if the accelleration limiter is on, limit the max speed permitted.
-			
+			System.out.println("Speed : " + speed + " : " + motorDirection);
 			speed = limitMaxSpeedChange(speed);
 		
 			previousSpeedLeft = speed;
 			//previousSpeedLeft = speed;
 			// Grab the turn speed as the X axis on the joystick and convert it (make all the required adjustments)
-			System.out.print("Target Speed: " + turnSpeed);
-			turnSpeed = turnSpeed;
+			//System.out.print("Target Speed: " + turnSpeed);
+			
 	
-			System.out.println(" | Speed: " + turnSpeed);
+			//System.out.println(" | Speed: " + turnSpeed);
 			// Drive the robot in arcade mode.
 			robotDrive.arcadeDrive(speed, turnSpeed, true);
+			
+			
+			robot.getController().getRollerDirection();
 		}
 	
 		// Is it in tank mode?

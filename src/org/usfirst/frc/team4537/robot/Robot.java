@@ -44,7 +44,7 @@ public class Robot extends SampleRobot {
     
 	private Watcher watcher;
 	private Thread watcherThread;
-    
+
 	/**
 	 * Constructor. Creates the robot and the main components.
 	 */

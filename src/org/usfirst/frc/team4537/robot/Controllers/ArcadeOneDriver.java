@@ -1,5 +1,6 @@
 package org.usfirst.frc.team4537.robot.Controllers;
 import edu.wpi.first.wpilibj.*;
+import edu.wpi.first.wpilibj.Relay.Value;
 
 public class ArcadeOneDriver extends DriverController {
 
@@ -7,6 +8,18 @@ public class ArcadeOneDriver extends DriverController {
 	
 	public ArcadeOneDriver(){
 		stick = new Joystick(0);
+	}
+	
+	//Used for relay roller
+	@Override
+	public Value getRollerDirection(){
+		Value direction = Relay.Value.kOff;//set the inital value of direction to Off
+		if(stick.getPOV() == 0){
+			direction = Relay.Value.kForward; // if POV is forward (up) set direction to Forward
+		}else if(stick.getPOV() == 180){
+			direction = Relay.Value.kReverse;// if POV is backwards (down) set direction to Reverse
+		}
+		return direction;
 	}
 	
 	@Override
@@ -63,7 +76,11 @@ public class ArcadeOneDriver extends DriverController {
 
 	@Override
 	public boolean canSwapDirection() {
-		return false;
+		if(stick.getPOV() == 0){
+			return true;
+		}else{
+			return false;
+		}
 	}
 
 	@Override
