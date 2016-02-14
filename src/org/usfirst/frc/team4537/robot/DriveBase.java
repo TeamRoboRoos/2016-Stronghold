@@ -15,9 +15,9 @@ public class DriveBase {
 	// ----------------------------------------------------------------------
 	// The motors - each needs the correct CAN ID to be set
 	
+	
+	
 	// Can change for left motor, or left rear motor (if there are four)
-	private final int ROLLER = 0;
-
 	private final int LEFT_REAR_MOTOR = 11;
 	
 	// Can change for right motor, or right rear motor (if there are four)
@@ -82,7 +82,6 @@ public class DriveBase {
         // Four motor drive. If the CAN IDs are properly set, you won't need to do anything here.
         robotDrive = new RobotDrive(new CANTalon(LEFT_FRONT_MOTOR), new CANTalon(LEFT_REAR_MOTOR),
         							new CANTalon(RIGHT_FRONT_MOTOR), new CANTalon(RIGHT_REAR_MOTOR));
-        roller = new Relay(ROLLER);
         
         // Inverts the motors. You will need to set this, in order to make the 
         // wheels match direction. Commented out for now due to an overabundance
@@ -132,12 +131,9 @@ public class DriveBase {
 			// Grab the speed as the Y axis on the joystick and convert it (make all the required adjustments)
 			double speed = convertSpeed(joystick0.getAxis(AxisType.kY));
 			double turnSpeed = convertTurnNoAccel(joystick0.getThrottle());
-			// Finally, if the accelleration limiter is on, limit the max speed permitted.
-			System.out.println("Speed : " + speed + " : " + motorDirection);
+			// Finally, if the accelleration limiter is on, limit the max speed permitted
 			speed = limitMaxSpeedChange(speed);
-		
 			previousSpeedLeft = speed;
-			//previousSpeedLeft = speed;
 			// Grab the turn speed as the X axis on the joystick and convert it (make all the required adjustments)
 			//System.out.print("Target Speed: " + turnSpeed);
 			
