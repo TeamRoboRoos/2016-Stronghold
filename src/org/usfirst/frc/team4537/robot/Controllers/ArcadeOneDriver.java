@@ -14,11 +14,16 @@ public class ArcadeOneDriver extends DriverController {
 	@Override
 	public Value getRollerDirection(){
 		Value direction = Relay.Value.kOff;//set the inital value of direction to Off
-		if(stick.getRawButton(1)){
+		
+		if(stick.getRawButton(1))
+		{
 			direction = Relay.Value.kForward; // if POV is forward (up) set direction to Forward
-		}else if(stick.getRawButton(2)){
+		}
+		else if(stick.getRawButton(2))
+		{
 			direction = Relay.Value.kReverse;// if POV is backwards (down) set direction to Reverse
 		}
+		
 		return direction;
 	}
 	
@@ -55,15 +60,18 @@ public class ArcadeOneDriver extends DriverController {
 	}
 
 	@Override
-	public int getBallGrabberMovement() {
-		int direction = 0;
-		System.out.println(stick.getPOV());
+	public double getBallGrabberMovement() {
+		double direction = 0;
 
-		if(stick.getPOV() == 0){
+		if(stick.getPOV() == 0)
+		{
 			direction = -1;
-		}else if(stick.getPOV() == 180){
+		}
+		else if(stick.getPOV() == 180)
+		{
 			direction = 1;
 		}
+		
 		return direction;
 	}
 

@@ -33,7 +33,7 @@ public class DriveBase {
 	private int motorDirection = 1;	
 	
 	// Set to -1 to reverse the turn direction
-	private final int TURN_DIRECTION = -1;	
+	private int TURN_DIRECTION = -1;	
 	
 	// Speed limited. Set to 1 to make Maddy happy. Set below 1 to make Maddy sad.
 	private final double MAX_SPEED = 1; 
@@ -44,11 +44,11 @@ public class DriveBase {
 	// ----------------------------------------------------------------------
 	// When we play with setting the maximum possible accelleration, we'll 
 	// need to adjust this. At the moment, it may be worth ignoring for a bit.
-	private final double MAX_ACCELERATION = 0.07;
+	private final double MAX_ACCELERATION = 0.01;
 	
 	// Modify this to test the accelleration limiters - probably 
     // worth waiting until we confirm the code.
-	private boolean limitMaxAcceleration = false;
+	private boolean limitMaxAcceleration = true;
 
 	// --------------------------------------false--------------------------------
 	// Various internal variables used to run the drivebase
@@ -64,7 +64,7 @@ public class DriveBase {
 	private double previousSpeedRight;		// Used for accelleration limiter - what was the last right motor speed?
 	private double previousTurnSpeed;		// Used for accelleration limiter - what was the last turn speed?
 	private boolean changedDirections = false;
-	private Relay roller;
+	
 	// ----------------------------------------------------------------------
 	// Constructors
 	// ----------------------------------------------------------------------
@@ -130,9 +130,10 @@ public class DriveBase {
 			// Grab the speed as the Y axis on the joystick and convert it (make all the required adjustments)
 			double speed = convertSpeed(joystick0.getAxis(AxisType.kY));
 			double turnSpeed = convertTurnNoAccel(joystick0.getThrottle());
+			
 			// Finally, if the accelleration limiter is on, limit the max speed permitted
 			speed = limitMaxSpeedChange(speed);
-			previousSpeedLeft = speed;
+			
 			// Grab the turn speed as the X axis on the joystick and convert it (make all the required adjustments)
 			//System.out.print("Target Speed: " + turnSpeed);
 			
@@ -306,6 +307,7 @@ public class DriveBase {
 		if (!didChangeDirection)
 		{
 			motorDirection = motorDirection * -1;
+			TURN_DIRECTION = TURN_DIRECTION * -1;
 			this.didChangeDirection = true;
 		}
 	}
@@ -440,22 +442,30 @@ public class DriveBase {
 	
 	private double limitMaxSpeedChange(double speed)
 	{
-		return limitSpeed(speed, previousSpeedLeft);
+		double newSpeed = limitSpeed(speed, previousSpeedLeft);
+		previousSpeedLeft = newSpeed;
+		return newSpeed;
 	}
 	
 	private double limitMaxSpeedLeftChange(double speed)
 	{
-		return limitSpeed(speed, previousSpeedLeft);
+		double newSpeed = limitSpeed(speed, previousSpeedLeft);
+		previousSpeedLeft = newSpeed;
+		return newSpeed;
 	}
 	 
 	private double limitMaxSpeedRightChange(double speed)
 	{
-		return limitSpeed(speed, previousSpeedRight);
+		double newSpeed = limitSpeed(speed, previousSpeedRight);
+		previousSpeedRight = newSpeed;
+		return newSpeed;
 	}
 	
 	private double limitMaxTurnSpeedChange(double turnSpeed)
 	{
-		return limitSpeed(turnSpeed, previousTurnSpeed);
+		double newSpeed = limitSpeed(turnSpeed, previousSpeedRight);
+		previousTurnSpeed = newSpeed;
+		return newSpeed;
 	}
 	
 	private double limitSpeed(double targetSpeed, double oldSpeed)
@@ -519,6 +529,8 @@ public class DriveBase {
 		{
 			speed = 0;
 		}
+		
+		System.out.println("Speed: " + oldSpeed + " : " + speed);
 
 		return speed;
 	}

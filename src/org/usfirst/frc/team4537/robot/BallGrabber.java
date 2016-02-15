@@ -18,19 +18,37 @@ public class BallGrabber {
 	private int[] encoderPins = {5,6}; // encoder pins {a,b}
 	private Encoder encoder;
 	
+	private double grabberRaiseVariant = 0.4;
+	private double grabberLowerVariant = 0.25;
+	
+	
 	private int[] angles = {0, 90};
+	
 	public BallGrabber(Robot robot)
 	{
 		this.robot = robot;
+		
 		rollerRelay = new Relay(ROLLER,Direction.kBoth);
+		
 		leftMotor = new Talon(BALL_GRABBER_LEFT);
 		rightMotor = new Talon(BALL_GRABBER_RIGHT);
+		
 		encoder = new Encoder(encoderPins[0],encoderPins[1]);
 	}
+	
 	public void operatorControl() {
-		rollerRelay.set(robot.getController().getRollerDirection());
-		leftMotor.set(robot.getController().getBallGrabberMovement()/2);
-		rightMotor.set(robot.getController().getBallGrabberMovement()/2);
+		Relay.Value rollerDirection = robot.getController().getRollerDirection();
+		rollerRelay.set(rollerDirection);
+		
+		double grabberDirection = robot.getController().getBallGrabberMovement();
+		
+		if (grabberDirection > 0) { grabberDirection = grabberDirection * grabberLowerVariant; }
+		if (grabberDirection < 0) { grabberDirection = grabberDirection * grabberRaiseVariant; }
+		
+		System.out.println(grabberDirection);
+		
+		leftMotor.set(grabberDirection);
+		rightMotor.set(grabberDirection);
 	}
 	
 }
