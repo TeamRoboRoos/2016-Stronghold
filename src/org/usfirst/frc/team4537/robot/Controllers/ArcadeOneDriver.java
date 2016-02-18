@@ -93,6 +93,7 @@ public class ArcadeOneDriver extends DriverController {
 	@Override
 	public boolean canSwapDirection() {
 		if(stick.getRawButton(3)){
+			System.out.println("SWAPDIRECTION");
 			return true;
 		}else{
 			return false;

@@ -42,11 +42,11 @@ public class DriveBase {
 	private final double MAX_TURN_SPEED = 0.75;
 	
 	// ----------------------------------------------------------------------
-	// When we play with setting the maximum possible accelleration, we'll 
+	// When we play with setting the maximum possible acceleration, we'll 
 	// need to adjust this. At the moment, it may be worth ignoring for a bit.
 	private final double MAX_ACCELERATION = 0.01;
 	
-	// Modify this to test the accelleration limiters - probably 
+	// Modify this to test the acceleration limiters - probably 
     // worth waiting until we confirm the code.
 	private boolean limitMaxAcceleration = false;
 
@@ -132,7 +132,7 @@ public class DriveBase {
 			double speed = convertSpeed(joystick0.getAxis(AxisType.kY));
 			double turnSpeed = convertTurnNoAccel(joystick0.getThrottle());
 			
-			// Finally, if the accelleration limiter is on, limit the max speed permitted
+			// Finally, if the acceleration limiter is on, limit the max speed permitted
 			speed = limitMaxSpeedChange(speed);
 			
 			// Grab the turn speed as the X axis on the joystick and convert it (make all the required adjustments)
@@ -165,7 +165,7 @@ public class DriveBase {
 		{	
 			// Grab the speed as the Y axis on the joystick and convert it (make all the required adjustments)
 			double speed = convertSpeed(robot.getController().getSpeed());
-			// Finally, if the accelleration limiter is on, limit the max speed permitted.
+			// Finally, if the acceleration limiter is on, limit the max speed permitted.
 			speed = limitMaxSpeedChange(speed);
 			previousSpeedLeft = speed;
 			// Grab the turn speed as the X axis on the joystick and convert it (make all the required adjustments)
@@ -189,7 +189,7 @@ public class DriveBase {
 	}
 	
 	// Runs through most of the adjustments needed for the motor speed. As 
-	// the accelleration limiter is different for tank drive over other forms, that
+	// the acceleration limiter is different for tank drive over other forms, that
 	// step has to be handled elsewhere.
 	private double convertSpeed(double speed)
 	{	
@@ -473,7 +473,7 @@ public class DriveBase {
 	{
 		double speed = 0;
 		
-		// If we aren't limiting max accelleration, don't do anything
+		// If we aren't limiting max acceleration, don't do anything
 		if (limitMaxAcceleration == false)
 		{
 			speed = targetSpeed;
