@@ -29,17 +29,17 @@ public class DriveBase {
 	// Can change for right front motor (only if four motors are attached)
 	private final int RIGHT_FRONT_MOTOR = 20;
 	
-	// Set to -1 to reverse the default directionx`
+	// Set to -1 to reverse the default direction`
 	private int motorDirection = 1;	
 	
 	// Set to -1 to reverse the turn direction
-	private int TURN_DIRECTION = -1;	
+	private int TURN_DIRECTION = 1;	
 	
 	// Speed limited. Set to 1 to make Maddy happy. Set below 1 to make Maddy sad.
 	private final double MAX_SPEED = 1; 
 	
 	// Limits the maxiumum turning speed. 1 is max turning speed.	
-	private final double MAX_TURN_SPEED = 0.5;
+	private final double MAX_TURN_SPEED = 0.75;
 	
 	// ----------------------------------------------------------------------
 	// When we play with setting the maximum possible accelleration, we'll 
@@ -48,7 +48,7 @@ public class DriveBase {
 	
 	// Modify this to test the accelleration limiters - probably 
     // worth waiting until we confirm the code.
-	private boolean limitMaxAcceleration = true;
+	private boolean limitMaxAcceleration = false;
 
 	// --------------------------------------false--------------------------------
 	// Various internal variables used to run the drivebase
@@ -60,9 +60,9 @@ public class DriveBase {
 	private double currentMaxSpeed;			// What is the maximum speed available to us?
 	private boolean didChangeSpeed;			// Did the driver recently change speed?
 	
-	private double previousSpeedLeft;		// Used for accelleration limiter - what was the last left motor speed?
-	private double previousSpeedRight;		// Used for accelleration limiter - what was the last right motor speed?
-	private double previousTurnSpeed;		// Used for accelleration limiter - what was the last turn speed?
+	private double previousSpeedLeft;		// Used for acceleration limiter - what was the last left motor speed?
+	private double previousSpeedRight;		// Used for acceleration limiter - what was the last right motor speed?
+	private double previousTurnSpeed;		// Used for acceleration limiter - what was the last turn speed?
 	private boolean changedDirections = false;
 	
 	// ----------------------------------------------------------------------
@@ -70,7 +70,7 @@ public class DriveBase {
 	// ----------------------------------------------------------------------
 	
 	/**
-	 * Default contructor - handles basic configuration	 
+	 * Default constructor - handles basic configuration	 
 	 * 
 	 * @param robot a reference to the base robot class.
 	 */
@@ -92,7 +92,7 @@ public class DriveBase {
         
         // Ignore. Just sets what direction is forward by default. Change to -1 if the robot
         // is to head
-        motorDirection = 1;
+        motorDirection = -1;
         
         // Set the current max speed to the default.
         currentMaxSpeed = MAX_SPEED;
@@ -101,7 +101,7 @@ public class DriveBase {
         // max speed, but also drops torque.
         didChangeSpeed = false;
         
-        // Used to handled the accelleration limiter.
+        // Used to handled the acceleration limiter.
         previousSpeedLeft = 0;
         previousSpeedRight = 0;
 	}
@@ -120,13 +120,14 @@ public class DriveBase {
 		// Is it in arcade mode? 
 		if (robot.getController().getDriveMode() == DriverController.ARCADE)
 		{
-
+			/*
 			if(robot.getController().canSwapDirection() && !changedDirections){
 				motorDirection = motorDirection * -1;
 				changedDirections = true;
 			}else if(!robot.getController().canSwapDirection()){
 				changedDirections = false;
 			}
+			*/
 			// Grab the speed as the Y axis on the joystick and convert it (make all the required adjustments)
 			double speed = convertSpeed(joystick0.getAxis(AxisType.kY));
 			double turnSpeed = convertTurnNoAccel(joystick0.getThrottle());
@@ -150,7 +151,7 @@ public class DriveBase {
 			double leftSpeed  = convertSpeed(joystick0.getAxis(AxisType.kY));
 			double rightSpeed = convertSpeed(joystick1.getAxis(AxisType.kY));
 			
-			// Finally, if the accelleration limiter is on, limit the max speed permitted.
+			// Finally, if the acceleration limiter is on, limit the max speed permitted.
 			leftSpeed  = limitMaxSpeedLeftChange(leftSpeed);
 			rightSpeed = limitMaxSpeedRightChange(rightSpeed);
 			previousSpeedLeft = leftSpeed;
@@ -206,7 +207,7 @@ public class DriveBase {
 		// Reverse the turn speed if the robot has been inverted (front is the shooter, not the grabber)
 		turnSpeed = turnSpeed * motorDirection;
 		// Reverse the turn speed if the turning has been inverted
-		turnSpeed = turnSpeed * TURN_DIRECTION;
+		//turnSpeed = turnSpeed * TURN_DIRECTION;
 		// Modify the turning speed by the current max speed value (for example, half the speed if currentMaxSpeed is 0.5).
 		turnSpeed = turnSpeed * currentMaxSpeed;
 		// Modify the turning speed by the preset max turning speed value.
@@ -289,7 +290,7 @@ public class DriveBase {
 		{
 			// Make sure that the robot is stationary, to reduce strain on the
 			// drivetrain.
-			if (previousSpeedLeft == 0 && previousSpeedRight == 0)
+			if (previousSpeedLeft <= 0.3 && previousSpeedRight <= 0.3 && previousSpeedLeft >= -0.3 && previousSpeedRight >= -0.3)
 			{
 				this.invertMotors();
 			}
@@ -437,7 +438,7 @@ public class DriveBase {
 	}
 	
 	// ----------------------------------------------------------------------
-	// Accelleration Limiter
+	// Acceleration Limiter
 	// ----------------------------------------------------------------------
 	
 	private double limitMaxSpeedChange(double speed)

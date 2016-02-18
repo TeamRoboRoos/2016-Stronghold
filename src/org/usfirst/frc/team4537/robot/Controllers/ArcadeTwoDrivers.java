@@ -1,6 +1,7 @@
 package org.usfirst.frc.team4537.robot.Controllers;
 
 import edu.wpi.first.wpilibj.*;
+import edu.wpi.first.wpilibj.Relay.Value;
 
 public class ArcadeTwoDrivers extends DriverController{
 	private Joystick driverStick;
@@ -48,7 +49,7 @@ public class ArcadeTwoDrivers extends DriverController{
 
 	@Override
 	public boolean canSwapDirection() {
-		return false;
+		return driverStick.getRawButton(3);
 	}
 
 	@Override
@@ -74,8 +75,6 @@ public class ArcadeTwoDrivers extends DriverController{
 		return 0;
 	}
 
-
-
 	@Override
 	public int getBallGrabberDirection() {
 		return STOPPED;
@@ -93,7 +92,39 @@ public class ArcadeTwoDrivers extends DriverController{
 		}
 		else return REVERSE;
 	}
+	
+	@Override
+	public double getBallGrabberMovement() {
+		double direction = 0;
 
+		if(operatorStick.getRawButton(3))
+		{
+			direction = -1;
+		}
+		else if(operatorStick.getRawButton(2))
+		{
+			direction = .6;
+		}
+		
+		return direction;
+	}
+	
+	@Override
+	public Value getRollerDirection(){
+		Value direction = Relay.Value.kOff;//set the inital value of direction to Off
+		
+		if(operatorStick.getRawButton(5))
+		{
+			direction = Relay.Value.kForward; // if POV is forward (up) set direction to Forward
+		}
+		else if(operatorStick.getRawButton(4))
+		{
+			direction = Relay.Value.kReverse;// if POV is backwards (down) set direction to Reverse
+		}
+		
+		return direction;
+	}
+	
 	@Override
 	public boolean isTowerUp() {
 		return false;

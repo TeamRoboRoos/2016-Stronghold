@@ -1,7 +1,6 @@
 
 package org.usfirst.frc.team4537.robot;
 
-import edu.wpi.first.wpilibj.SampleRobot;
 import org.usfirst.frc.team4537.robot.AutonomousModes.*;
 import org.usfirst.frc.team4537.robot.Controllers.*;
 import org.usfirst.frc.team4537.robot.Watcher;
@@ -44,13 +43,15 @@ public class Robot extends SampleRobot {
     
 	private Watcher watcher;
 	private Thread watcherThread;
+	
+	private ADXRS450_Gyro gyro;
 
 	/**
 	 * Constructor. Creates the robot and the main components.
 	 */
     public Robot() {
     	// 1. Set the default controller
-        controller = new ArcadeOneDriver();
+        controller = new ArcadeTwoDrivers();
         
         // Set the drive base. Note that the drive base may reference
         // the controller, so it needs to be the last step.
@@ -74,6 +75,9 @@ public class Robot extends SampleRobot {
         
         // Set the default autonomous mode
         defaultAutonomous = new DriveToShootLeftSide(this);
+        
+        this.gyro = new ADXRS450_Gyro();
+        this.gyro.calibrate();
     	
         this.watcher = new Watcher(this);
         watcherThread = new Thread(this.watcher);
@@ -149,5 +153,9 @@ public class Robot extends SampleRobot {
     
     public Climber getClimber() {
     	return climber;
+    }
+    
+    public ADXRS450_Gyro getGyro() {
+    	return gyro;
     }
 }
