@@ -138,6 +138,10 @@ public class DriveBase {
 			// Grab the turn speed as the X axis on the joystick and convert it (make all the required adjustments)
 			//System.out.print("Target Speed: " + turnSpeed);
 			
+			if (joystick0.getRawButton(1) == true) {
+				speed = speed / 2;
+				turnSpeed = turnSpeed / 1.5;
+			}
 			
 			//System.out.println(" | Speed: " + turnSpeed);
 			// Drive the robot in arcade mode.
