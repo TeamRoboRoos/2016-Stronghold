@@ -44,6 +44,7 @@ public abstract class DriverController {
 	
 	//climber
 	public abstract boolean raiseClimber();
+	public abstract boolean lowerClimber();
 	public abstract int getWinchDirection();
 	
 	//cameras and sensors

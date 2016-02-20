@@ -139,4 +139,9 @@ public class ArcadeTwoDrivers extends DriverController{
 	public double getCameraY() {
 		return 1;
 	}
+
+	@Override
+	public boolean lowerClimber() {
+		return false;
+	}
 }

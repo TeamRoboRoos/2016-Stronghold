@@ -110,6 +110,7 @@ public class Robot extends SampleRobot {
     		Timer.delay(0.005);
         	driveBase.operatorControl();
         	ballGrabber.operatorControl();
+        	climber.operatorControl();
     	}
     }
 

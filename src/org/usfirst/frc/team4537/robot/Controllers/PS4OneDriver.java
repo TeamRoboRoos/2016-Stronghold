@@ -130,4 +130,9 @@ public class PS4OneDriver extends DriverController {
 	public boolean raiseClimber() {
 		return false;
 	}
+
+	@Override
+	public boolean lowerClimber() {
+		return false;
+	}
 }
