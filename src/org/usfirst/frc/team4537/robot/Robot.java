@@ -96,14 +96,14 @@ public class Robot extends SampleRobot {
         // Set the default autonomous mode
         defaultAutonomous = new DriveToShootLeftSide(this);
         
+        driverStation = DriverStation.getInstance();
+        
         this.gyro = new ADXRS450_Gyro();
         this.gyro.calibrate();
     	
         this.watcher = new Watcher(this);
         watcherThread = new Thread(this.watcher);
         watcherThread.start();
-        
-        driverStation = DriverStation.getInstance();
         
         //thing = new DoubleSolenoid(0,1,2);
     }
