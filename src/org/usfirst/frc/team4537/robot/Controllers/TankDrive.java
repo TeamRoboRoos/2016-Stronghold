@@ -89,10 +89,15 @@ public class TankDrive extends DriverController {
 	public int getBallGrabberDirection() {
 		return STOPPED;
 	}
+	
+	@Override
+	public boolean triggerClimber() {
+		return false;
+	}
 
 	@Override
-	public int getWinchDirection() {
-		return STOPPED;
+	public boolean detriggerClimber() {
+		return false;
 	}
 
 	@Override

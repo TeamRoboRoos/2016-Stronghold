@@ -9,6 +9,13 @@ public class Rioduino {
 	public static final byte OPERATOR_CONTROLLED = 3;
 	public static final byte TEST = 4;
 	
+	public static final byte CLIMBER_TRIGGERED = 5;
+	public static final byte CLIMBER_WINDING = 6;
+	public static final byte PHHHT = 7;
+	public static final byte CLIMBER_UNWINDING = 8;
+	public static final byte CLIMBER_DETRIGGERED = 9;
+	public static final byte NO_ACTION = 99;
+	
 	private I2C i2c;
 	private Robot robot;
 	

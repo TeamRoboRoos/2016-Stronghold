@@ -44,16 +44,17 @@ public class DriveBase {
 	// ----------------------------------------------------------------------
 	// When we play with setting the maximum possible acceleration, we'll 
 	// need to adjust this. At the moment, it may be worth ignoring for a bit.
-	private final double MAX_ACCELERATION = 0.01;
+	private final double MAX_ACCELERATION = 0.02;
 	
 	// Modify this to test the acceleration limiters - probably 
     // worth waiting until we confirm the code.
-	private boolean limitMaxAcceleration = false;
+	private boolean limitMaxAcceleration = true;
 
 	// --------------------------------------false--------------------------------
 	// Various internal variables used to run the drivebase
 	private boolean driving;				// Is it currently moving in autonomous?
 	private double finishTime;				// When is it due to finish moving?
+	private double targetDistance;			// What range should it stop at?	
 	
 	private boolean didChangeDirection;		// Have we just swapped direction in teleop?
 	
@@ -82,6 +83,8 @@ public class DriveBase {
         // Four motor drive. If the CAN IDs are properly set, you won't need to do anything here.
         robotDrive = new RobotDrive(new CANTalon(LEFT_FRONT_MOTOR), new CANTalon(LEFT_REAR_MOTOR),
         							new CANTalon(RIGHT_FRONT_MOTOR), new CANTalon(RIGHT_REAR_MOTOR));
+        
+       // robotDrive = new RobotDrive(new CANTalon(LEFT_FRONT_MOTOR), new CANTalon(LEFT_REAR_MOTOR));
         
         // Inverts the motors. You will need to set this, in order to make the 
         // wheels match direction. Commented out for now due to an overabundance
@@ -374,7 +377,6 @@ public class DriveBase {
 	 */
 	public void driveForwardForDistance(double speed, double meters)
 	{
-		
 	}
 	
 	/**
@@ -385,7 +387,55 @@ public class DriveBase {
 	 * @param range 	distance (in meters) to stop at. 
 	 */
 	public void driveForwardToRange(double speed, double range) {
+		// Have we started driving yet? If not, let's start!
+		if (!driving)
+		{
+			// Record that we are driving.
+			driving = true;
+			
+			// Calculate the time that we will finish driving. (Add the number of seconds
+			// that we are driving for to the current time.
+			targetDistance = range;
+			if (targetDistance < 17) targetDistance = 17; // Smallest possible detectable distance
+		}
 		
+		// Grab the current distance
+		// Note that this will change if the direction is inverted.
+		double currentDistance = Math.round(this.robot.getSensors().getDistanceFront());
+		
+		double targetSpeed = 0;
+		// Have we reached the target range?
+		if (currentDistance > targetDistance)
+		{
+			targetSpeed = speed;
+			if (currentDistance < targetDistance + 10)
+			{
+				targetSpeed = targetSpeed / 2;
+			}
+		}
+		
+		// Have we gone too far?
+		if (currentDistance < targetDistance)
+		{
+			targetSpeed = -speed;
+			if (currentDistance > targetDistance - 10)
+			{
+				targetSpeed = targetSpeed / 2;
+			}
+		}
+		
+		//System.out.println(targetSpeed);
+		
+		if (targetSpeed == 0)
+		{
+			// Yes. Time to stop driving.
+			driving = false;
+			this.stop();
+		}
+		else
+		{
+			this.driveForward(targetSpeed);
+		}
 	}
 	
 	/**
@@ -487,7 +537,18 @@ public class DriveBase {
 		// deaccelerate
 		else if (targetSpeed == 0)
 		{
-			speed = 0;
+			if (oldSpeed > (MAX_ACCELERATION * 3))
+			{
+				speed  =  oldSpeed - (MAX_ACCELERATION * 3); 
+			}
+			else if (oldSpeed < (MAX_ACCELERATION * -3))
+			{
+				speed  =  oldSpeed + (MAX_ACCELERATION * 3); 
+			}
+			else
+			{
+				speed = 0;
+			}
 		}
 		
 		// No change in speed?
@@ -496,10 +557,10 @@ public class DriveBase {
 			speed = targetSpeed;
 		}
 		
-		/*
 		// Probably won't need, but per above. If set to coast, going from 1 to .5 may not
 		// put any pressure on the wheels, so this would allow that to happen freely.
 		// We can uncomment this later if needed.
+		/*
 		else if (targetSpeed > 0 && targetSpeed < oldSpeed)
 		{
 			speed = targetSpeed;
@@ -535,7 +596,7 @@ public class DriveBase {
 			speed = 0;
 		}
 		
-		System.out.println("Speed: " + oldSpeed + " : " + speed);
+		//System.out.println("Speed: " + oldSpeed + " : " + speed);
 
 		return speed;
 	}

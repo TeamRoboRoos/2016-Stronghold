@@ -9,12 +9,10 @@ import edu.wpi.first.wpilibj.Relay.Direction;
 
 public class BallGrabber {
 	private Robot robot;
-	private final int ROLLER = 0;
-	private final int BALL_GRABBER_LEFT = 1;
-	private Talon leftMotor;
-	private Talon rightMotor;
-	private final int BALL_GRABBER_RIGHT = 2;
-	private Relay rollerRelay;
+	private final int ROLLER = 2;
+	private final int BALL_GRABBER_TALON_ID = 1;
+	private Talon ballGrabberRaiseLowerMotor;
+	private Talon rollerMotor;
 	private int[] encoderPins = {5,6}; // encoder pins {a,b}
 	private Encoder encoder;
 	
@@ -28,17 +26,21 @@ public class BallGrabber {
 	{
 		this.robot = robot;
 		
-		rollerRelay = new Relay(ROLLER,Direction.kBoth);
+		rollerMotor = new Talon(ROLLER);
 		
-		leftMotor = new Talon(BALL_GRABBER_LEFT);
-		rightMotor = new Talon(BALL_GRABBER_RIGHT);
+		ballGrabberRaiseLowerMotor = new Talon(BALL_GRABBER_TALON_ID);
 		
 		encoder = new Encoder(encoderPins[0],encoderPins[1]);
 	}
 	
 	public void operatorControl() {
 		Relay.Value rollerDirection = robot.getController().getRollerDirection();
-		rollerRelay.set(rollerDirection);
+		if (rollerDirection == Relay.Value.kForward)
+			rollerMotor.set(-1);
+		else if (rollerDirection == Relay.Value.kReverse)
+			rollerMotor.set(1);
+		else
+			rollerMotor.set(0);
 		
 		double grabberDirection = robot.getController().getBallGrabberMovement();
 		
@@ -47,7 +49,14 @@ public class BallGrabber {
 		
 		System.out.println(grabberDirection);
 		
-		leftMotor.set(grabberDirection);
-		rightMotor.set(grabberDirection);
+		ballGrabberRaiseLowerMotor.set(grabberDirection);
+	}
+	
+	public void lowerBallGrabber()
+	{
+	}
+	
+	public void raiseBallGrabber()
+	{
 	}
 }

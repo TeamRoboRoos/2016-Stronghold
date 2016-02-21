@@ -82,7 +82,7 @@ public class ArcadeTwoDriversPS4 extends DriverController{
 
 	@Override
 	public boolean raiseClimber() {
-		return operatorPS4.getRawButton(4);
+		return (operatorPS4.getRawButton(4) && operatorPS4.getRawButton(2));
 	}
 	
 	@Override
@@ -90,12 +90,25 @@ public class ArcadeTwoDriversPS4 extends DriverController{
 		return operatorPS4.getRawButton(2);
 	}
 	
+	/*
 	@Override
 	public int getWinchDirection() {
 		if(operatorPS4.getRawButton(2) == true) {
 			return FORWARD;
 		}
 		else return REVERSE;
+	}
+	
+	*/
+	
+	@Override
+	public boolean triggerClimber() {
+		return (operatorPS4.getRawButton(5) && operatorPS4.getRawButton(6));
+	}
+	
+	@Override
+	public boolean detriggerClimber() {
+		return (operatorPS4.getRawButton(9) && operatorPS4.getRawButton(10));
 	}
 	
 	@Override

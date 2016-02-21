@@ -40,10 +40,7 @@ public class Robot extends SampleRobot {
     private Shooter shooter;
     private Climber climber;
     private BallGrabber ballGrabber;
-    private PortCullisLift portCullitLift;
-    
-    private Ultrasonic leftUltrasonic;
-    private MaxbotixUltrasonic frontUltrasonic;
+    private PortCullisLift portcullisLift;
     
 	private Watcher watcher;
 	private Thread watcherThread;
@@ -52,11 +49,10 @@ public class Robot extends SampleRobot {
 	
 	private DriverStation driverStation;
 	
-	//private DoubleSolenoid thing;
-	
 	private ADXRS450_Gyro gyro;
 	
-	PortCullisLift portCullisLift;
+	private Sensors sensors;
+	
 
 	/**
 	 * Constructor. Creates the robot and the main components.
@@ -67,7 +63,7 @@ public class Robot extends SampleRobot {
         
         // Set the drive base. Note that the drive base may reference
         // the controller, so it needs to be the last step.
-    	//driveBase = new DriveBase(this);
+    	driveBase = new DriveBase(this);
 
         ballGrabber = new BallGrabber(this);
     	
@@ -79,7 +75,7 @@ public class Robot extends SampleRobot {
 
         defaultAutonomous = new DriveToDefence(this);
     	
-       // portCullisLift = new PortCullisLift(this);
+        portcullisLift = new PortCullisLift();
         
         try
         {
@@ -89,15 +85,6 @@ public class Robot extends SampleRobot {
         {
         }
         
-        
-        // echo is 0
-        // trigger is 1
-        leftUltrasonic = new Ultrasonic(1,0);
-        leftUltrasonic.setEnabled(true);
-        leftUltrasonic.setAutomaticMode(true);
-        
-        frontUltrasonic = new MaxbotixUltrasonic(0);
-        
         // Set the default autonomous mode
         defaultAutonomous = new DriveToShootLeftSide(this);
         
@@ -105,6 +92,8 @@ public class Robot extends SampleRobot {
         
         this.gyro = new ADXRS450_Gyro();
         this.gyro.calibrate();
+        
+        this.sensors = new Sensors();
     	
         this.watcher = new Watcher(this);
         watcherThread = new Thread(this.watcher);
@@ -136,6 +125,11 @@ public class Robot extends SampleRobot {
     		i2c.writeBulk(sendData);
     		*/
     		
+    		//System.out.println(this.sensors.getDistanceFront());
+    		
+    		//this.driveBase.driveForwardToRange(1, 20);
+    		
+    		
     		Timer.delay(0.05);
     	}
     	/*
@@ -155,9 +149,10 @@ public class Robot extends SampleRobot {
     	this.rioduino.send(Rioduino.OPERATOR_CONTROLLED);
     	while(isOperatorControl() && isEnabled()){
     		Timer.delay(0.005);
-        	driveBase.operatorControl();
-        	ballGrabber.operatorControl();
-        	climber.operatorControl();
+    		
+        	this.driveBase.operatorControl();
+        	this.ballGrabber.operatorControl();
+        	this.climber.operatorControl();
     	}
     }
 
@@ -201,7 +196,7 @@ public class Robot extends SampleRobot {
     
     public PortCullisLift getPortCullisLift()
     {
-    	return portCullisLift;
+    	return portcullisLift;
     }
     
     public Shooter getShooter() {
@@ -223,5 +218,10 @@ public class Robot extends SampleRobot {
     
     public ADXRS450_Gyro getGyro() {
     	return gyro;
+    }
+    
+    public Sensors getSensors()
+    {
+    	return this.sensors;
     }
 }

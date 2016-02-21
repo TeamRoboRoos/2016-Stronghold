@@ -84,13 +84,15 @@ public class ArcadeTwoDrivers extends DriverController{
 	public boolean raiseClimber() {
 		return driverStick.getRawButton(1);
 	}
+	
+	@Override
+	public boolean triggerClimber() {
+		return false;
+	}
 
 	@Override
-	public int getWinchDirection() {
-		if(driverStick.getRawButton(1) == true) {
-			return FORWARD;
-		}
-		else return REVERSE;
+	public boolean detriggerClimber() {
+		return false;
 	}
 	
 	@Override

@@ -126,8 +126,13 @@ public class ArcadeOneDriver extends DriverController {
 	}
 
 	@Override
-	public int getWinchDirection() {
-		return 0;
+	public boolean triggerClimber() {
+		return false;
+	}
+
+	@Override
+	public boolean detriggerClimber() {
+		return false;
 	}
 
 	@Override

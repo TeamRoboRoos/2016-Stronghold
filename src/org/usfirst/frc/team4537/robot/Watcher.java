@@ -9,7 +9,8 @@ public class Watcher implements Runnable
 	
 	private boolean stopThread = false;
 	
-	private byte lastBatteryCharge;
+	private long lastBatteryUpdate;
+	private long batteryUpdateDelay = 500;
 	
 	public Watcher(Robot robot)
 	{
@@ -36,12 +37,12 @@ public class Watcher implements Runnable
 	        	 if (this.robot.getCamera() != null)
 	        		 this.robot.getCamera().pushFrame();
 	        	 
-	        	 byte currentBatteryCharge = (byte)(this.robot.getDriverStation().getBatteryVoltage() * 10);
 	        	 
-	        	 if (currentBatteryCharge != lastBatteryCharge)
+	        	 if (System.currentTimeMillis() > lastBatteryUpdate + batteryUpdateDelay)
 	        	 {
+		        	 byte currentBatteryCharge = (byte)(this.robot.getDriverStation().getBatteryVoltage() * 10);
 	        		 this.robot.getRioduino().send(currentBatteryCharge);
-	        		 lastBatteryCharge = currentBatteryCharge;
+	        		 lastBatteryUpdate = System.currentTimeMillis();
 	        	 }
 	        	 
 	        	 //this.robot.getRioduino().send(b);

@@ -16,7 +16,6 @@ public class Sensors {
     
     public Sensors()
     {
-    	
     	// echo is 0
         // trigger is 1
         leftUltrasonic = new Ultrasonic(1,0);

@@ -120,10 +120,15 @@ public class PS4OneDriver extends DriverController {
 	public int getBallGrabberDirection(){
 		return 0;
 	}
+	
+	@Override
+	public boolean triggerClimber() {
+		return false;
+	}
 
 	@Override
-	public int getWinchDirection() {
-		return 0;
+	public boolean detriggerClimber() {
+		return false;
 	}
 
 	@Override
