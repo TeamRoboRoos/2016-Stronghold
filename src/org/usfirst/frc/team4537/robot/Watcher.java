@@ -36,7 +36,7 @@ public class Watcher implements Runnable
 	        	 if (this.robot.getCamera() != null)
 	        		 this.robot.getCamera().pushFrame();
 	        	 
-	        	 byte currentBatteryCharge = (byte)(Math.round(this.robot.getDriverStation().getBatteryVoltage() * 10) * -1);
+	        	 byte currentBatteryCharge = (byte)(Math.round(this.robot.getDriverStation().getBatteryVoltage() * 10));
 	        	 
 	        	 if (currentBatteryCharge != lastBatteryCharge)
 	        	 {

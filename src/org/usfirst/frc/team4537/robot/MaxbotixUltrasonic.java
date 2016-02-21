@@ -8,9 +8,11 @@ public class MaxbotixUltrasonic extends SensorBase
 	private final double IN_TO_CM_CONVERSION = 2.54;
 	private boolean use_units; //Are we using units or just returning voltage?
 	private double min_voltage;	//Minimum voltage the ultrasonic sensor can return
+	/*
 	private double voltage_range; //The range of the voltages returned by the sensor (maximum - minimum)
 	private double min_distance; //Minimum distance the ultrasonic sensor can return in inches
 	private double distance_range;//The range of the distances returned by this class in inches (maximum - minimum)
+	*/
 	AnalogInput channel;
 	
 	

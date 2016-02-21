@@ -20,6 +20,7 @@ public class Rioduino {
 
 	public void send(byte b)
 	{
+		// Send the data across
 		i2c.write(b, 0);
 	}
 }

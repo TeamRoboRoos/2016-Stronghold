@@ -47,17 +47,13 @@ public class Robot extends SampleRobot {
 	private Watcher watcher;
 	private Thread watcherThread;
 	
-<<<<<<< HEAD
 	private Rioduino rioduino;
 	
 	private DriverStation driverStation;
 	
 	//private DoubleSolenoid thing;
 	
-	
-=======
 	private ADXRS450_Gyro gyro;
->>>>>>> eb0b22b06ea4165a27dabdaa0d7769e0c1e6e16f
 
 	/**
 	 * Constructor. Creates the robot and the main components.
@@ -206,7 +202,6 @@ public class Robot extends SampleRobot {
     	return climber;
     }
     
-<<<<<<< HEAD
     public DriverStation getDriverStation() {
     	return driverStation;
     }
@@ -214,9 +209,9 @@ public class Robot extends SampleRobot {
     public Rioduino getRioduino()
     {
     	return this.rioduino;
-=======
+    }
+    
     public ADXRS450_Gyro getGyro() {
     	return gyro;
->>>>>>> eb0b22b06ea4165a27dabdaa0d7769e0c1e6e16f
     }
 }
