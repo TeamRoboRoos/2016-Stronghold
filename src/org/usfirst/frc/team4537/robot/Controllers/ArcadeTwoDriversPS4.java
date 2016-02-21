@@ -3,17 +3,17 @@ package org.usfirst.frc.team4537.robot.Controllers;
 import edu.wpi.first.wpilibj.*;
 import edu.wpi.first.wpilibj.Relay.Value;
 
-public class ArcadeTwoDrivers extends DriverController{
+public class ArcadeTwoDriversPS4 extends DriverController{
 	private Joystick driverStick;
-	private Joystick operatorStick;
+	private Joystick operatorPS4;
 	
 	public double getSlider() {
 		return driverStick.getRawAxis(3);
 	}
 	
-	public ArcadeTwoDrivers() {
+	public ArcadeTwoDriversPS4() {
 		driverStick = new Joystick(0);
-		operatorStick = new Joystick(1);
+		operatorPS4 = new Joystick(1);
 	}
 	
 	@Override
@@ -34,17 +34,17 @@ public class ArcadeTwoDrivers extends DriverController{
 	@Override
 	public Joystick getJoystick(int id)	{
 		if (id == 0) return driverStick;
-		else return operatorStick;
+		else return operatorPS4;
 	}
 
 	@Override
 	public boolean isShooterSpinning() {
-		return operatorStick.getRawButton(1);
+		return operatorPS4.getRawButton(1);
 	}
 
 	@Override
 	public boolean isShooting() {
-		return operatorStick.getRawButton(0);
+		return operatorPS4.getRawButton(0);
 	}
 
 	@Override
@@ -82,12 +82,17 @@ public class ArcadeTwoDrivers extends DriverController{
 
 	@Override
 	public boolean raiseClimber() {
-		return driverStick.getRawButton(1);
+		return operatorPS4.getRawButton(4);
 	}
-
+	
+	@Override
+	public boolean lowerClimber() {
+		return operatorPS4.getRawButton(2);
+	}
+	
 	@Override
 	public int getWinchDirection() {
-		if(driverStick.getRawButton(1) == true) {
+		if(operatorPS4.getRawButton(2) == true) {
 			return FORWARD;
 		}
 		else return REVERSE;
@@ -97,11 +102,11 @@ public class ArcadeTwoDrivers extends DriverController{
 	public double getBallGrabberMovement() {
 		double direction = 0;
 
-		if(operatorStick.getRawButton(3))
+		if(operatorPS4.getPOV() == 0)
 		{
 			direction = -1;
 		}
-		else if(operatorStick.getRawButton(2))
+		else if(operatorPS4.getPOV() == 180)
 		{
 			direction = .6;
 		}
@@ -113,11 +118,11 @@ public class ArcadeTwoDrivers extends DriverController{
 	public Value getRollerDirection(){
 		Value direction = Relay.Value.kOff;//set the inital value of direction to Off
 		
-		if(operatorStick.getRawButton(5))
+		if(operatorPS4.getRawButton(1))
 		{
 			direction = Relay.Value.kForward; // if POV is forward (up) set direction to Forward
 		}
-		else if(operatorStick.getRawButton(4))
+		else if(operatorPS4.getRawButton(3))
 		{
 			direction = Relay.Value.kReverse;// if POV is backwards (down) set direction to Reverse
 		}
@@ -138,10 +143,5 @@ public class ArcadeTwoDrivers extends DriverController{
 	@Override
 	public double getCameraY() {
 		return 1;
-	}
-
-	@Override
-	public boolean lowerClimber() {
-		return false;
 	}
 }

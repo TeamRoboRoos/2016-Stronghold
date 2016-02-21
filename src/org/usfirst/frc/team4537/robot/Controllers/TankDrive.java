@@ -99,4 +99,9 @@ public class TankDrive extends DriverController {
 	public boolean isBraking() {
 		return false;
 	}
+
+	@Override
+	public boolean lowerClimber() {
+		return false;
+	}
 }

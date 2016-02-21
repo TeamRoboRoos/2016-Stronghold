@@ -47,6 +47,7 @@ public class Robot extends SampleRobot {
 	private Watcher watcher;
 	private Thread watcherThread;
 	
+<<<<<<< HEAD
 	private Rioduino rioduino;
 	
 	private DriverStation driverStation;
@@ -54,13 +55,16 @@ public class Robot extends SampleRobot {
 	//private DoubleSolenoid thing;
 	
 	
+=======
+	private ADXRS450_Gyro gyro;
+>>>>>>> eb0b22b06ea4165a27dabdaa0d7769e0c1e6e16f
 
 	/**
 	 * Constructor. Creates the robot and the main components.
 	 */
     public Robot() {
     	// 1. Set the default controller
-        controller = new ArcadeOneDriver();
+        controller = new ArcadeTwoDriversPS4();
         
         // Set the drive base. Note that the drive base may reference
         // the controller, so it needs to be the last step.
@@ -95,6 +99,9 @@ public class Robot extends SampleRobot {
         
         // Set the default autonomous mode
         defaultAutonomous = new DriveToShootLeftSide(this);
+        
+        this.gyro = new ADXRS450_Gyro();
+        this.gyro.calibrate();
     	
         this.watcher = new Watcher(this);
         watcherThread = new Thread(this.watcher);
@@ -149,6 +156,7 @@ public class Robot extends SampleRobot {
     		Timer.delay(0.005);
         	driveBase.operatorControl();
         	ballGrabber.operatorControl();
+        	climber.operatorControl();
     	}
     }
 
@@ -198,6 +206,7 @@ public class Robot extends SampleRobot {
     	return climber;
     }
     
+<<<<<<< HEAD
     public DriverStation getDriverStation() {
     	return driverStation;
     }
@@ -205,5 +214,9 @@ public class Robot extends SampleRobot {
     public Rioduino getRioduino()
     {
     	return this.rioduino;
+=======
+    public ADXRS450_Gyro getGyro() {
+    	return gyro;
+>>>>>>> eb0b22b06ea4165a27dabdaa0d7769e0c1e6e16f
     }
 }

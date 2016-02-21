@@ -10,10 +10,10 @@ import edu.wpi.first.wpilibj.Relay.Direction;
 public class BallGrabber {
 	private Robot robot;
 	private final int ROLLER = 0;
-	private final int BALL_GRABBER_LEFT= 1;
+	private final int BALL_GRABBER_LEFT = 1;
 	private Talon leftMotor;
 	private Talon rightMotor;
-	private final int BALL_GRABBER_RIGHT=2;
+	private final int BALL_GRABBER_RIGHT = 2;
 	private Relay rollerRelay;
 	private int[] encoderPins = {5,6}; // encoder pins {a,b}
 	private Encoder encoder;
@@ -50,5 +50,4 @@ public class BallGrabber {
 		leftMotor.set(grabberDirection);
 		rightMotor.set(grabberDirection);
 	}
-	
 }
