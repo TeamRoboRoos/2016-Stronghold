@@ -9,6 +9,8 @@ public class Watcher implements Runnable
 	
 	private boolean stopThread = false;
 	
+	private byte lastBatteryCharge;
+	
 	public Watcher(Robot robot)
 	{
 		this.robot = robot;		
@@ -30,8 +32,20 @@ public class Watcher implements Runnable
 	        	 {
 	        		 throw new InterruptedException("Stopped");
 	        	 }
+	        	 
 	        	 if (this.robot.getCamera() != null)
 	        		 this.robot.getCamera().pushFrame();
+	        	 
+	        	 byte currentBatteryCharge = (byte)(Math.round(this.robot.getDriverStation().getBatteryVoltage() * 10) * -1);
+	        	 
+	        	 if (currentBatteryCharge != lastBatteryCharge)
+	        	 {
+	        		 this.robot.getRioduino().send(currentBatteryCharge);
+	        		 lastBatteryCharge = currentBatteryCharge;
+	        	 }
+	        	 
+	        	 System.out.println(currentBatteryCharge);
+	        	 //this.robot.getRioduino().send(b);
 	         }
 	     } 
 		catch (InterruptedException e) 

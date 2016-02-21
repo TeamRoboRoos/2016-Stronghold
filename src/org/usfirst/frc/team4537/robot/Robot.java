@@ -1,7 +1,6 @@
 
 package org.usfirst.frc.team4537.robot;
 
-import edu.wpi.first.wpilibj.SampleRobot;
 import org.usfirst.frc.team4537.robot.AutonomousModes.*;
 import org.usfirst.frc.team4537.robot.Controllers.*;
 import org.usfirst.frc.team4537.robot.Watcher;
@@ -42,8 +41,19 @@ public class Robot extends SampleRobot {
     private Climber climber;
     private BallGrabber ballGrabber;
     
+    private Ultrasonic leftUltrasonic;
+    private MaxbotixUltrasonic frontUltrasonic;
+    
 	private Watcher watcher;
 	private Thread watcherThread;
+	
+	private Rioduino rioduino;
+	
+	private DriverStation driverStation;
+	
+	//private DoubleSolenoid thing;
+	
+	
 
 	/**
 	 * Constructor. Creates the robot and the main components.
@@ -54,13 +64,15 @@ public class Robot extends SampleRobot {
         
         // Set the drive base. Note that the drive base may reference
         // the controller, so it needs to be the last step.
-    	driveBase = new DriveBase(this);
+    	//driveBase = new DriveBase(this);
 
         ballGrabber = new BallGrabber(this);
     	
         shooter = new Shooter(this);
         
         climber = new Climber(this);
+        
+        this.rioduino = new Rioduino(this);
 
         defaultAutonomous = new DriveToDefence(this);
     	
@@ -72,12 +84,25 @@ public class Robot extends SampleRobot {
         {
         }
         
+        
+        // echo is 0
+        // trigger is 1
+        leftUltrasonic = new Ultrasonic(1,0);
+        leftUltrasonic.setEnabled(true);
+        leftUltrasonic.setAutomaticMode(true);
+        
+        frontUltrasonic = new MaxbotixUltrasonic(0);
+        
         // Set the default autonomous mode
         defaultAutonomous = new DriveToShootLeftSide(this);
     	
         this.watcher = new Watcher(this);
         watcherThread = new Thread(this.watcher);
         watcherThread.start();
+        
+        driverStation = DriverStation.getInstance();
+        
+        //thing = new DoubleSolenoid(0,1,2);
     }
     
 	/**
@@ -90,18 +115,36 @@ public class Robot extends SampleRobot {
 	 * Autonomous mode	 
 	 */
     public void autonomous() {
+    	this.rioduino.send(Rioduino.AUTONOMOUS);
+    	
+    	while (isEnabled() && isAutonomous())
+    	{
+    		//System.out.println(frontUltrasonic.getVoltage() + ":" + (frontUltrasonic.getRangeInCM()));
+    		
+    		/*
+    		byte[] sendData = new byte[1];
+    		sendData[0] = (byte)2;
+    		
+    		i2c.writeBulk(sendData);
+    		*/
+    		
+    		Timer.delay(0.05);
+    	}
+    	/*
     	driveBase.stopSafety();
     	while(isAutonomous() && isEnabled()){
     		defaultAutonomous.update();
     	}
     	
     	driveBase.startSafety();
+    	*/
     }
 
     /**
      * Teleop mode
      */
     public void operatorControl() {
+    	this.rioduino.send(Rioduino.OPERATOR_CONTROLLED);
     	while(isOperatorControl() && isEnabled()){
     		Timer.delay(0.005);
         	driveBase.operatorControl();
@@ -113,6 +156,10 @@ public class Robot extends SampleRobot {
      * Runs during test mode
      */
     public void test() {
+    }
+    
+    public void disabled() {
+    	this.rioduino.send(Rioduino.DISABLED);
     }
     
     /* -------------------------------------------------------------------
@@ -149,5 +196,14 @@ public class Robot extends SampleRobot {
     
     public Climber getClimber() {
     	return climber;
+    }
+    
+    public DriverStation getDriverStation() {
+    	return driverStation;
+    }
+    
+    public Rioduino getRioduino()
+    {
+    	return this.rioduino;
     }
 }
