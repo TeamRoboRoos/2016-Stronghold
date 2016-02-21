@@ -40,6 +40,7 @@ public class Robot extends SampleRobot {
     private Shooter shooter;
     private Climber climber;
     private BallGrabber ballGrabber;
+    private PortCullisLift portCullitLift;
     
     private Ultrasonic leftUltrasonic;
     private MaxbotixUltrasonic frontUltrasonic;
@@ -76,6 +77,8 @@ public class Robot extends SampleRobot {
 
         defaultAutonomous = new DriveToDefence(this);
     	
+        portCullisLift = new PortCullisLift(this);
+        
         try
         {
         	camera = new RobotCamera();
@@ -192,6 +195,10 @@ public class Robot extends SampleRobot {
     
     public BallGrabber getBallGrabber() {
     	return ballGrabber;
+    }
+    
+    public PortCullisLift getPortCullisLift{
+    	return portCullisLift;
     }
     
     public Shooter getShooter() {
