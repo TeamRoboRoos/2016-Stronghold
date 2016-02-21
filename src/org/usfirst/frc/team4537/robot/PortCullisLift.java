@@ -8,7 +8,7 @@ import edu.wpi.first.wpilibj.Relay.Direction;
 
 
 public class PortCullisLift {
-
+/*
 	private Robot robot;
 	private final int BALL_GRABBER_LEFT= 1;
 	private final int BALL_GRABBER_RIGHT= 2;
@@ -66,6 +66,7 @@ public class PortCullisLift {
 		{
 			currentState = 0;
 		}
+		/*
 		
 		/*
 		if (grabberDirection > 0) { 
@@ -83,5 +84,5 @@ public class PortCullisLift {
 		leftMotor.set(grabberDirection);
 		rightMotor.set(grabberDirection);
 		*/
-	}
+	//}
 }

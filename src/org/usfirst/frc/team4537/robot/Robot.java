@@ -55,6 +55,8 @@ public class Robot extends SampleRobot {
 	//private DoubleSolenoid thing;
 	
 	private ADXRS450_Gyro gyro;
+	
+	PortCullisLift portCullisLift;
 
 	/**
 	 * Constructor. Creates the robot and the main components.
@@ -77,7 +79,7 @@ public class Robot extends SampleRobot {
 
         defaultAutonomous = new DriveToDefence(this);
     	
-        portCullisLift = new PortCullisLift(this);
+       // portCullisLift = new PortCullisLift(this);
         
         try
         {
@@ -197,7 +199,8 @@ public class Robot extends SampleRobot {
     	return ballGrabber;
     }
     
-    public PortCullisLift getPortCullisLift{
+    public PortCullisLift getPortCullisLift()
+    {
     	return portCullisLift;
     }
     
