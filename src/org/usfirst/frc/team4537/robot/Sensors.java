@@ -33,25 +33,25 @@ public class Sensors {
     
     public double getDistanceFront()
     {
-    	return frontUltrasonic.getRangeInCM(); //has been converted to CM
+    	return frontUltrasonic.getRangeInMM() / 10; //has been converted to CM
     }
     
     /*
     public double getDistanceBack()
     {
-    	return backUltrasonic.RangeInMM() * 10; //has been converted to CM
+    	return backUltrasonic.RangeInMM() / 10; //has been converted to CM
     }
     */
     
     public double getDistanceLeft()
     {
-    	return leftUltrasonic.getRangeMM() * 10; //has been converted to CM
+    	return leftUltrasonic.getRangeMM() / 10; //has been converted to CM
     }
    
     /*
     public double getDistanceRight()
     {
-    	return rightUltrasonic.getRangeMM() * 10; //has been converted to CM
+    	return rightUltrasonic.getRangeMM() / 10; //has been converted to CM
     }
     */
     

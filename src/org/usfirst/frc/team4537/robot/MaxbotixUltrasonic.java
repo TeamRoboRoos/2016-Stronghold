@@ -5,7 +5,7 @@ import edu.wpi.first.wpilibj.*;
 public class MaxbotixUltrasonic extends SensorBase 
 {
 
-	private final double IN_TO_CM_CONVERSION = 2.54;
+	private final double IN_TO_MM_CONVERSION = 25.4;
 	private boolean use_units; //Are we using units or just returning voltage?
 	private double min_voltage;	//Minimum voltage the ultrasonic sensor can return
 	/*
@@ -82,7 +82,7 @@ public class MaxbotixUltrasonic extends SensorBase
 		//next, denormalize to the unit range
 		//range = (range * distance_range) + min_distance;
 		
-		range = range / 0.0098;
+		range = range / 0.009766;
 		return range;
 	}
 	
@@ -93,7 +93,7 @@ public class MaxbotixUltrasonic extends SensorBase
 	 * Returns -2.0 if the voltage is below the minimum voltage
 	 */
 
-	public double getRangeInCM() {
+	public double getRangeInMM() {
 		double range;
 		//if we're not using units, return -1, a range that will most likely never be returned
 		if (!use_units) {
@@ -107,7 +107,7 @@ public class MaxbotixUltrasonic extends SensorBase
 		range = getRangeInInches();
 		
 		//finally, convert to centimeters
-		range *= IN_TO_CM_CONVERSION;
+		range *= IN_TO_MM_CONVERSION;
 		return range;
 	}
 }

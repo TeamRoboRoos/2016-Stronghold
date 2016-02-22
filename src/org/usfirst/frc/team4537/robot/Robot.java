@@ -100,6 +100,7 @@ public class Robot extends SampleRobot {
         watcherThread.start();
         
         //thing = new DoubleSolenoid(0,1,2);
+        
     }
     
 	/**
@@ -114,8 +115,8 @@ public class Robot extends SampleRobot {
     public void autonomous() {
     	this.rioduino.send(Rioduino.AUTONOMOUS);
     	
-    	while (isEnabled() && isAutonomous())
-    	{
+    	//while (isEnabled() && isAutonomous())
+    	//{
     		//System.out.println(frontUltrasonic.getVoltage() + ":" + (frontUltrasonic.getRangeInCM()));
     		
     		/*
@@ -128,10 +129,19 @@ public class Robot extends SampleRobot {
     		//System.out.println(this.sensors.getDistanceFront());
     		
     		//this.driveBase.driveForwardToRange(1, 20);
+    		do
+    		{
+    			System.out.println("s:" + this.sensors.getDistanceFront());
+    			this.driveBase.driveForwardToRange(1, 25);
+        		Timer.delay(0.05);
+    		} while (this.driveBase.isDriving());
     		
+    		this.driveBase.stop();
+    		
+    		System.out.println("Halted");
     		
     		Timer.delay(0.05);
-    	}
+    	//}
     	/*
     	driveBase.stopSafety();
     	while(isAutonomous() && isEnabled()){

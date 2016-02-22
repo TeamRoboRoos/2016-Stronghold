@@ -84,7 +84,7 @@ public class DriveBase {
         robotDrive = new RobotDrive(new CANTalon(LEFT_FRONT_MOTOR), new CANTalon(LEFT_REAR_MOTOR),
         							new CANTalon(RIGHT_FRONT_MOTOR), new CANTalon(RIGHT_REAR_MOTOR));
         
-       // robotDrive = new RobotDrive(new CANTalon(LEFT_FRONT_MOTOR), new CANTalon(LEFT_REAR_MOTOR));
+        //robotDrive = new RobotDrive(new CANTalon(LEFT_FRONT_MOTOR), new CANTalon(LEFT_REAR_MOTOR));
         
         // Inverts the motors. You will need to set this, in order to make the 
         // wheels match direction. Commented out for now due to an overabundance
@@ -393,8 +393,7 @@ public class DriveBase {
 			// Record that we are driving.
 			driving = true;
 			
-			// Calculate the time that we will finish driving. (Add the number of seconds
-			// that we are driving for to the current time.
+			// Calculate the target distance that we will finish driving at. 
 			targetDistance = range;
 			if (targetDistance < 17) targetDistance = 17; // Smallest possible detectable distance
 		}
@@ -424,7 +423,7 @@ public class DriveBase {
 			}
 		}
 		
-		//System.out.println(targetSpeed);
+		System.out.println(targetSpeed);
 		
 		if (targetSpeed == 0)
 		{

@@ -11,7 +11,7 @@ public class Climber
 	
 	private DoubleSolenoid climberSolenoid;
 	
-	private long phhhtDelay = 1500;
+	private long phhhtDelay = 100000;
 	private long lastPhhht = 0;
 	private long phhtLength = 250;
 	private long targetTime = 0;
@@ -27,6 +27,9 @@ public class Climber
 	
 	public void operatorControl() 
 	{
+		// Extending or lowering the climber. We don't want to do both at once,
+		// so this let's us only do one or the other. If nether, sets the
+		// pneumatics to off.
 		if (robot.getController().triggerClimber())
 		{
 			this.extendClimber();
@@ -39,7 +42,12 @@ public class Climber
 			this.robot.getRioduino().send(Rioduino.CLIMBER_DETRIGGERED);
 		}
 		
-		else if(robot.getController().raiseClimber()) 
+		else 
+		{
+			this.stopClimber();
+		}
+		
+		if(robot.getController().raiseClimber()) 
 		{
 			long currentTime = System.currentTimeMillis();
 
@@ -79,7 +87,6 @@ public class Climber
 		
 		else 
 		{
-			this.stopClimber();
 			this.stopWinch();
 		}
 	}
