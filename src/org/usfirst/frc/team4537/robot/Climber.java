@@ -30,6 +30,7 @@ public class Climber
 		// Extending or lowering the climber. We don't want to do both at once,
 		// so this let's us only do one or the other. If nether, sets the
 		// pneumatics to off.
+		System.out.println("CLIMBER POWER      : " + winchTalon.getOutputCurrent() + " AMPS & " + winchTalon.getOutputVoltage() + " VOLTS");
 		if (robot.getController().triggerClimber())
 		{
 			this.extendClimber();

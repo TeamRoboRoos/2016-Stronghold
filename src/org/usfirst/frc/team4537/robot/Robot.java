@@ -4,7 +4,7 @@ package org.usfirst.frc.team4537.robot;
 import org.usfirst.frc.team4537.robot.AutonomousModes.*;
 import org.usfirst.frc.team4537.robot.Controllers.*;
 import org.usfirst.frc.team4537.robot.Watcher;
-
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.*;
 
 /**
@@ -107,6 +107,14 @@ public class Robot extends SampleRobot {
 	 * Initialise the robot	 
 	 */
     public void robotInit() {
+        SmartDashboard.putString("DB/String 0", "Stop/Breach/Shoot");
+        SmartDashboard.putString("DB/String 1", "Left/Right");
+        SmartDashboard.putString("DB/String 2", "Defense Type");
+        
+		SmartDashboard.putNumber("DB/Slider 0", 0.2); 
+		SmartDashboard.putNumber("DB/Slider 1", 1); 
+		SmartDashboard.putNumber("DB/Slider 2", 0.1); 
+		SmartDashboard.putNumber("DB/Slider 3", 1);
     }
 
 	/**
@@ -129,13 +137,14 @@ public class Robot extends SampleRobot {
     		//System.out.println(this.sensors.getDistanceFront());
     		
     		//this.driveBase.driveForwardToRange(1, 20);
+    	/*
     		do
     		{
     			System.out.println("s:" + this.sensors.getDistanceFront());
     			this.driveBase.driveForwardToRange(1, 25);
         		Timer.delay(0.05);
-    		} while (this.driveBase.isDriving());
-    		
+    		} while (this.driveBase.isDriving() && isEnabled() && isAutonomous());
+    		*/
     		this.driveBase.stop();
     		
     		System.out.println("Halted");

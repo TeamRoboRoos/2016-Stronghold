@@ -5,6 +5,7 @@ import edu.wpi.first.wpilibj.*;
 import edu.wpi.first.wpilibj.Joystick.AxisType;
 import edu.wpi.first.wpilibj.Joystick.RumbleType;
 import edu.wpi.first.wpilibj.RobotDrive.MotorType;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class DriveBase {
 	
@@ -93,8 +94,7 @@ public class DriveBase {
         //robotDrive.setInvertedMotor(MotorType.kRearLeft, true);
         //robotDrive.setInvertedMotor(MotorType.kFrontLeft, true);
         
-        // Ignore. Just sets what direction is forward by default. Change to -1 if the robot
-        // is to head
+        // Just sets what direction is forward by default.
         motorDirection = -1;
         
         // Set the current max speed to the default.
@@ -148,7 +148,32 @@ public class DriveBase {
 			
 			//System.out.println(" | Speed: " + turnSpeed);
 			// Drive the robot in arcade mode.
-			robotDrive.arcadeDrive(speed, turnSpeed, true);
+			double speedSign = Math.signum(speed);
+			double minDrivePower = 0.2;
+			double minControlPower = 1;
+			double maxControlPower = 0.1;
+			double maddyPower = 1;
+			double tempSpeed = Math.abs(speed);
+			
+			if (SmartDashboard.getNumber("DB/Slider 0") <= 1) minDrivePower = SmartDashboard.getNumber("DB/Slider 0");
+			if (SmartDashboard.getNumber("DB/Slider 1") <= 1) minControlPower = SmartDashboard.getNumber("DB/Slider 1");
+			if (SmartDashboard.getNumber("DB/Slider 2") <= 1) maxControlPower = SmartDashboard.getNumber("DB/Slider 2");
+			if (SmartDashboard.getNumber("DB/Slider 3") <= 1) maddyPower = SmartDashboard.getNumber("DB/Slider 3");
+			
+			double robSpeed = speedSign * ((Math.pow((1-tempSpeed),3)*minDrivePower)+(3*Math.pow((1-tempSpeed),2)*tempSpeed*minControlPower)+(3*(1-tempSpeed)*Math.pow(tempSpeed,2)*maxControlPower)+(Math.pow(tempSpeed,3)*maddyPower));
+
+			speedSign = Math.signum(turnSpeed);
+			tempSpeed = Math.abs(turnSpeed);
+			
+			double robTurnSpeed = speedSign * ((Math.pow((1-tempSpeed),3)*minDrivePower)+(3*Math.pow((1-tempSpeed),2)*tempSpeed*minControlPower)+(3*(1-tempSpeed)*Math.pow(tempSpeed,2)*maxControlPower)+(Math.pow(tempSpeed,3)*maddyPower));
+
+			//System.out.println(robSpeed);
+			
+			if (speed == 0) robSpeed = speed;
+			if (turnSpeed == 0) robTurnSpeed = speed;
+			
+			this.robotDrive.arcadeDrive(robSpeed, robTurnSpeed);
+			//this.robotDrive.arcadeDrive(speed, turnSpeed);
 		}
 	
 		// Is it in tank mode?

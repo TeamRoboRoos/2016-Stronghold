@@ -36,9 +36,9 @@ public class BallGrabber {
 	public void operatorControl() {
 		Relay.Value rollerDirection = robot.getController().getRollerDirection();
 		if (rollerDirection == Relay.Value.kForward)
-			rollerMotor.set(-1);
-		else if (rollerDirection == Relay.Value.kReverse)
 			rollerMotor.set(1);
+		else if (rollerDirection == Relay.Value.kReverse)
+			rollerMotor.set(-1);
 		else
 			rollerMotor.set(0);
 		
