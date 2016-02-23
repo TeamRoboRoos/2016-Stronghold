@@ -49,9 +49,11 @@ public class Robot extends SampleRobot {
 	
 	private DriverStation driverStation;
 	
-	private ADXRS450_Gyro gyro;
-	
 	private Sensors sensors;
+	
+	private Victor motorFans;
+	
+	private AnalogInput pneumaticPressure;
 	
 
 	/**
@@ -60,6 +62,8 @@ public class Robot extends SampleRobot {
     public Robot() {
     	// 1. Set the default controller
         controller = new ArcadeTwoDriversPS4();
+        
+        this.sensors = new Sensors();
         
         // Set the drive base. Note that the drive base may reference
         // the controller, so it needs to be the last step.
@@ -77,6 +81,9 @@ public class Robot extends SampleRobot {
     	
         portcullisLift = new PortCullisLift();
         
+        pneumaticPressure = new AnalogInput(3);
+        // 100 psi = 2.528075933456421v
+        
         try
         {
         	camera = new RobotCamera();
@@ -89,15 +96,12 @@ public class Robot extends SampleRobot {
         defaultAutonomous = new DriveToShootLeftSide(this);
         
         driverStation = DriverStation.getInstance();
-        
-        this.gyro = new ADXRS450_Gyro();
-        this.gyro.calibrate();
-        
-        this.sensors = new Sensors();
     	
         this.watcher = new Watcher(this);
         watcherThread = new Thread(this.watcher);
         watcherThread.start();
+        
+        this.motorFans = new Victor(3);
         
         //thing = new DoubleSolenoid(0,1,2);
         
@@ -110,8 +114,10 @@ public class Robot extends SampleRobot {
         SmartDashboard.putString("DB/String 0", "Stop/Breach/Shoot");
         SmartDashboard.putString("DB/String 1", "Left/Right");
         SmartDashboard.putString("DB/String 2", "Defense Type");
+        SmartDashboard.putString("DB/String 4", "Drive Mode");
+        SmartDashboard.putString("DB/String 8", "Normal");
         
-		SmartDashboard.putNumber("DB/Slider 0", 0.2); 
+		SmartDashboard.putNumber("DB/Slider 0", 0.1); 
 		SmartDashboard.putNumber("DB/Slider 1", 1); 
 		SmartDashboard.putNumber("DB/Slider 2", 0.1); 
 		SmartDashboard.putNumber("DB/Slider 3", 1);
@@ -122,43 +128,45 @@ public class Robot extends SampleRobot {
 	 */
     public void autonomous() {
     	this.rioduino.send(Rioduino.AUTONOMOUS);
+    	Autonomous autonomousMode = null;
     	
-    	//while (isEnabled() && isAutonomous())
-    	//{
-    		//System.out.println(frontUltrasonic.getVoltage() + ":" + (frontUltrasonic.getRangeInCM()));
-    		
-    		/*
-    		byte[] sendData = new byte[1];
-    		sendData[0] = (byte)2;
-    		
-    		i2c.writeBulk(sendData);
-    		*/
-    		
-    		//System.out.println(this.sensors.getDistanceFront());
-    		
-    		//this.driveBase.driveForwardToRange(1, 20);
-    	/*
-    		do
+    	String action = SmartDashboard.getString("DB/String 5").toLowerCase();
+    	String side = SmartDashboard.getString("DB/String 6").toLowerCase();
+    	String defense = SmartDashboard.getString("DB/String 7").toLowerCase();
+    	
+    	// Drive and stop
+    	
+    	if (action.equals("stop"))
+    	{
+    		if (defense.equals("drawbridge") || defense.equals("portcullis ") || defense.equals("sally port"))
     		{
-    			System.out.println("s:" + this.sensors.getDistanceFront());
-    			this.driveBase.driveForwardToRange(1, 25);
-        		Timer.delay(0.05);
-    		} while (this.driveBase.isDriving() && isEnabled() && isAutonomous());
-    		*/
-    		this.driveBase.stop();
-    		
-    		System.out.println("Halted");
-    		
-    		Timer.delay(0.05);
-    	//}
-    	/*
-    	driveBase.stopSafety();
-    	while(isAutonomous() && isEnabled()){
-    		defaultAutonomous.update();
+    			autonomousMode = new DriveToStopOnSensor(this);
+    		}
+    		else
+    		{
+    			autonomousMode = new DriveToStopOnDistance(this);
+    		}
     	}
     	
-    	driveBase.startSafety();
-    	*/
+    	if (autonomousMode != null)
+    	{
+    		
+    		while(isAutonomous() && isEnabled())
+    		{
+    			autonomousMode.update();
+        		Timer.delay(0.005);
+    		}
+    		this.getDriveBase().stop();
+    		/*
+    		do
+    		{
+    			this.getDriveBase().driveForwardToRange(0.15, 25);
+        		Timer.delay(0.005);
+    		} while (isAutonomous() && isEnabled() && driveBase.isDriving());
+    		*/
+    	}
+    	
+    	this.driveBase.stop();
     }
 
     /**
@@ -166,13 +174,17 @@ public class Robot extends SampleRobot {
      */
     public void operatorControl() {
     	this.rioduino.send(Rioduino.OPERATOR_CONTROLLED);
+    	this.motorFans.set(1);
     	while(isOperatorControl() && isEnabled()){
     		Timer.delay(0.005);
+    		
+    		System.out.println("pn " + pneumaticPressure.getVoltage());
     		
         	this.driveBase.operatorControl();
         	this.ballGrabber.operatorControl();
         	this.climber.operatorControl();
     	}
+    	this.motorFans.set(0);
     }
 
     /**
@@ -233,10 +245,6 @@ public class Robot extends SampleRobot {
     public Rioduino getRioduino()
     {
     	return this.rioduino;
-    }
-    
-    public ADXRS450_Gyro getGyro() {
-    	return gyro;
     }
     
     public Sensors getSensors()

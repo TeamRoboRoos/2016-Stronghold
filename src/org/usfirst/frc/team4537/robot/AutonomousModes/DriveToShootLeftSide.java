@@ -15,8 +15,8 @@ public class DriveToShootLeftSide extends Autonomous {
 	public void update() {
 		switch (stage) {
          	case 0:  
-         		robot.getDriveBase().driveForwardForTime(0.5, 3.5);
-         		if (robot.getDriveBase().isDriving()) {
+         		robot.getDriveBase().driveForwardForTime(0.15, 3.5);
+         		if (!robot.getDriveBase().isDriving()) {
          			stage = 1;
          		}
                 break;

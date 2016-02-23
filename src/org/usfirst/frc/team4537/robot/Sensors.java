@@ -1,11 +1,8 @@
 
 package org.usfirst.frc.team4537.robot;
 
-import org.usfirst.frc.team4537.robot.AutonomousModes.*;
-import org.usfirst.frc.team4537.robot.Controllers.*;
-
+import edu.wpi.first.wpilibj.ADXRS450_Gyro;
 import edu.wpi.first.wpilibj.Ultrasonic;
-
 
 public class Sensors {
 
@@ -13,14 +10,17 @@ public class Sensors {
 	
 	private Ultrasonic leftUltrasonic;
     private MaxbotixUltrasonic frontUltrasonic;
+	
+	private ADXRS450_Gyro gyro;
     
     public Sensors()
     {
-    	// echo is 0
-        // trigger is 1
-        leftUltrasonic = new Ultrasonic(1,0);
-        leftUltrasonic.setEnabled(true);
-        leftUltrasonic.setAutomaticMode(true);
+        this.gyro = new ADXRS450_Gyro();
+        this.gyro.calibrate();
+        
+        //leftUltrasonic = new Ultrasonic(1,0);
+        //leftUltrasonic.setEnabled(true);
+        //leftUltrasonic.setAutomaticMode(true);
         
         frontUltrasonic = new MaxbotixUltrasonic(0);
     	
@@ -55,6 +55,5 @@ public class Sensors {
     }
     */
     
-    //public class
     
 }
